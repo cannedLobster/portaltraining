@@ -153,7 +153,7 @@ p.hidden {
 
 /*.grid {
   float: left;
-  display: grid; 
+  display: grid;
   grid-template-columns: 500px 500px 500px;
   grid-gap: 20%;
   background-color: white;
@@ -203,8 +203,8 @@ p.hidden {
     font-size: 1em;
     justify-content: center;
     margin-bottom: 1em;
-  
-    // maintain aspect ratio 
+
+    // maintain aspect ratio
     width: 30vw;
     height: 30vw;
 }*/
@@ -217,6 +217,7 @@ p.hidden {
   width: 90%;
   border: 3px solid black;
   padding: 5px;
+  background-color: white;
 }
 
 .cart table {
@@ -251,9 +252,6 @@ tr.separating-line {
 tr td:first-child {
   width: 50%;
   padding-left: 10px;
-}
-tr td {
-  background-color: white;
 }
 td h3{
   font-size: 1.7em;
@@ -397,7 +395,7 @@ textarea:focus {
 
 @media (max-width: 600px) {
   form > div {
-    margin: 0 0 15px 0; 
+    margin: 0 0 15px 0;
   }
   form > div > label,
   legend {
@@ -416,7 +414,7 @@ textarea:focus {
   input[type=password],
   textarea,
   select {
-    width: 100%; 
+    width: 100%;
   }
 }
 @media (min-width: 1200px) {
@@ -441,6 +439,19 @@ textarea:focus {
   margin: auto;
 }
 
+/*Login content*/
+
+.login {
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 90%;
+  border: 3px solid black;
+  padding: 10px;
+  background-color: white;
+}
+
+
 /*Image*/
 img {
   width: 256px;
@@ -454,7 +465,7 @@ footer {
   overflow: hidden;
   border-radius: 10px;
   text-align: center;
-  
+
 }
 
 footer p {
