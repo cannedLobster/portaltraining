@@ -22,7 +22,7 @@ h1 {
   padding: 5px;
   float: left;
   color: red;
-  text-shadow: 1px 1px black;
+  text-shadow: 1px 1px yellow;
   font-size: 2.5em;
   margin-left: 20px;
 }
@@ -83,7 +83,7 @@ div a:hover {
   padding: 10px;
 }
 
-h2 {
+.menu h2 {
   text-align: center;
   font-size: 2.5em;
   text-shadow: 1px 1px white;
@@ -100,13 +100,12 @@ span.price {
 }
 
 a.addtocart-btn {
-	background-color: #d0451b;
+  background-color: #d0451b;
 	border-radius: 32px;
 	border: 1px solid #942911;
 	display: inline-block;
 	cursor: pointer;
-	margin-left: 10px;
-	margin-top: 2px;
+  margin-left: 10px;
 }
 
 .addtocart-btn span {
@@ -115,7 +114,6 @@ a.addtocart-btn {
 	font-size:16px;
 	padding:9px 27px;
 	text-decoration:none;
-	margin-bottom: 2px;
 }
 
 /*Grid mechanics*/
@@ -128,7 +126,6 @@ a.addtocart-btn {
   margin: 1.66%;
   background-color: #1E1E1E;
   overflow: hidden;
-  border-radius: 5px;
 }
 
 .square .content {
@@ -211,6 +208,114 @@ p.hidden {
     width: 30vw;
     height: 30vw;
 }*/
+
+/*Cart Content*/
+.cart {
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 90%;
+  border: 3px solid black;
+  padding: 5px;
+  background-color: white;
+}
+
+.cart table {
+  width: 100%;
+  /* border-spacing: 0 $unit-alpha / 2;
+    border-collapse: separate;
+    margin-top: (-$unit-alpha / 2);*/
+}
+
+.cart h2 {
+  text-align: left;
+  font-size: 1.5em;
+  text-shadow: 1px 1px white;
+}
+
+.cart thead {
+  background-color: #f21f1f;
+}
+
+thead th {
+    text-align: left;
+    padding: .5em;
+    color: white;
+}
+thead th:last-child {
+  text-align: right;
+}
+
+
+tr.separating-line {
+  /*TOP BORDER NOT WORKING*/
+  border-top: 3px #000 solid;
+}
+tr td:first-child {
+  width: 50%;
+  padding-left: 10px;
+}
+td h3{
+  font-size: 1.7em;
+  color: red;
+}
+td p{
+  font-size: 1.5em;
+}
+
+input {
+  width: 4em;
+  height: 3em;
+}
+input[type="number"]{
+  display: block;
+  margin: 0 auto;
+}
+
+p.cart-total {
+  text-align: right;
+  font-size: 1.5em;
+  padding-right: 1em;
+}
+
+th.totals-label {
+  font-size: 1em;
+  text-align: right;
+}
+div.totals-amt {
+  font-size: 1.3em;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.cart tfoot {
+  background-color: #f21f1f;
+  color: white;
+}
+tfoot th {
+  text-align: right;
+  padding: .5em;
+}
+tfoot td {
+  text-align: right;
+  padding-right: 20px;
+}
+th.full-total {
+  font-size: 1.5em;
+}
+div.full-totalamt {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+div.text-right {
+  text-align: right;
+}
+#checkout-btn {
+  margin: 10px 10px;
+  font-weight: bold;
+  padding: .5em;
+}
 
 /*Image*/
 img {

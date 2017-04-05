@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
+  </head>
+
+  <body>
+
+    <header>
+
+      <h1><a href="#" class="logo"><em>HUNGRY BURGERS</em></a></h1>
+
+      <nav>
+        <ul>
+          <li><a href="#">Navigation</a></li>
+          <li><a href="#">Cart</a></li>
+          <li><a href="#">Register</a></li>
+        </ul>
+        <div class="login-btn"><a href="#"><b>LOGIN</b></a></div>
+      </nav>
+
+    </header>
+    
+    <div class="cart">
+      <h2>CART</h2>
+      
+      <table>
+        
+        <thead>
+          <tr>
+            <th>Item(s)</th>
+            <th></th>
+            <th>Total(s)</th>
+          </tr>     
+        </thead>
+
+        <tr>
+          <td>
+            <a href="#"><h3>Cheeseburger</h3></a>
+            <p>$7</p>
+            <p>
+              <button>REMOVE</button>
+            </p>
+          </td>
+          <td>
+            <input type='number' value='1'>
+          </td>
+          <td>
+            <p class="cart-total">$7</p>
+          </td>
+        </tr>
+        
+        <!--TEMP until separating-line works-->
+        <tr>
+          <td colspan="3"><hr></td>
+        </tr>
+        
+        <tr class="separating-line">
+          <td>
+            <a href="#"><h3>Drink</h3></a>
+            <p>$1</p>
+            <p>
+              <button>REMOVE</button>
+            </p>
+          </td>
+          <td>
+            <input type='number' value='2'>
+          </td>
+          <td>
+            <p class="cart-total">$2</p>
+          </td>
+        </tr>
+        
+        <tr>
+          <td colspan="3"><hr></td>
+        </tr>
+        
+        <tr>
+          <th colspan='2' class="totals-label">Subtotal: </th>
+          <td><div class="totals-amt">$9</div></td>
+        </tr>
+        <tr>
+          <th colspan='2' class="totals-label">Sales Tax: </th>
+          <td><div class="totals-amt">$1</div></td>
+        </tr>
+        <tr>
+          <th colspan='2' class="totals-label">Shipping: </th>
+          <td><div class="totals-amt">$5</div></td>
+        </tr>
+        
+        <tr>
+          <tfoot>
+            <th colspan='2' class="full-total">TOTAL</th>
+            <td><div class="full-totalamt">$15</div></td>
+          </tfoot>
+        </tr>
+        
+      </table>
+      
+      <div class="text-right">
+        <button id="checkout-btn">Checkout</button>
+      </div>
+      
+    </div>
+
+
+    <footer>
+      <p>Committed to serving the best burgers since yesterday!</p>
+      <div class="contact"><a href="#">Contact</a></div>
+    </footer>
+
+  </body>
+</html>
