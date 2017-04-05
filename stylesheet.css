@@ -1,0 +1,244 @@
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font: 75% georgia, sans serif;
+  line-height: 2;
+  background-image: url("burger-background.jpg");
+  background-repeat: repeat;
+}
+
+/*HEADER ELEMENTS*/
+
+header {
+  background-color: #ff8522;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+h1 {
+  padding: 5px;
+  float: left;
+  color: red;
+  text-shadow: 1px 1px black;
+  font-size: 2.5em;
+  margin-left: 20px;
+}
+
+nav {
+  float: right;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
+nav ul {
+  list-style-type: none;
+}
+
+nav ul li {
+  display: inline;
+  padding: 10px;
+  background-color: orange;
+  border-radius: 20px;
+}
+
+.login-btn {
+  border: 3px solid #4ebbff;
+  border-radius: 20px;
+  padding: 10px 15px;
+  float: right;
+}
+
+/*LINKS*/
+a:link {
+  text-decoration: none;
+  color: inherit;
+}
+a:visited {
+  color: inherit;
+}
+a:hover, a:focus, a:active {
+  color: inherit;
+}
+li a:hover {
+  text-decoration: underline;
+  color: white;
+}
+div a:hover {
+  color: white;
+  /*color-background: black;*/
+}
+
+
+/*Menu Content*/
+
+.menu {
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 90%;
+  border: 3px solid black;
+  padding: 10px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.5em;
+  text-shadow: 1px 1px white;
+}
+
+p.label {
+  font-size: 1.3em;
+  text-align: center;
+  color: white;
+}
+
+span.price {
+  font-style: oblique;
+}
+
+a.addtocart-btn {
+	background-color: #d0451b;
+	border-radius: 32px;
+	border: 1px solid #942911;
+	display: inline-block;
+	cursor: pointer;
+	margin-left: 10px;
+	margin-top: 2px;
+}
+
+.addtocart-btn span {
+  color:#ffffff;
+	font-family:Trebuchet MS;
+	font-size:16px;
+	padding:9px 27px;
+	text-decoration:none;
+	margin-bottom: 2px;
+}
+
+/*Grid mechanics*/
+
+.square {
+  float: left;
+  position: relative;
+  width: 30%;
+  padding-bottom: 20%; /*30 = width for a 1:1 aspect ratio */
+  margin: 1.66%;
+  background-color: #1E1E1E;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.square .content {
+  position: absolute;
+  height: 90%;
+  width: 90%;
+  padding: 5%;
+}
+
+/* Responsive Image in Grid */
+.content .rs {
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  max-height: 80%;
+  max-width: 100%;
+}
+
+p.hidden {
+  visibility: hidden;
+  font-size: 1px;
+}
+
+
+/*.grid {
+  float: left;
+  display: grid; 
+  grid-template-columns: 500px 500px 500px;
+  grid-gap: 20%;
+  background-color: white;
+  margin-bottom: 30px;
+}
+
+.box {
+  background-color: gray;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.a {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.b {
+  grid-column: 2 / 2;
+  grid-row: 1 / 2;
+}
+
+.c {
+  grid-column: 1 / 2;
+  grid-row: 2 / 2;
+}
+
+.d {
+  grid-column: 2 / 2;
+  grid-row: 2 / 2;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+    max-width: 960px;
+    width: 80%;
+}
+
+.container__item {
+    align-content: center;
+    border: 1px solid #333;
+    display: flex;
+    flex-basis: 1;
+    font-size: 1em;
+    justify-content: center;
+    margin-bottom: 1em;
+  
+    // maintain aspect ratio 
+    width: 30vw;
+    height: 30vw;
+}*/
+
+/*Image*/
+img {
+  width: 256px;
+  height: 256px;
+}
+
+/*Footer*/
+
+footer {
+  background-color: #ff8522;
+  overflow: hidden;
+  border-radius: 10px;
+  text-align: center;
+  
+}
+
+footer p {
+  /*text-align: center;*/
+  font-size: 1.2em;
+  display: inline;
+}
+
+footer div.contact {
+  float: right;
+  font-size: 20px;
+  padding: 5px 20px;
+  border: 3px solid #4ebbff;
+  border-radius: 20px;
+  margin-right: 5px;
+}
