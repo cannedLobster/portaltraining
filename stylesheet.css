@@ -244,8 +244,6 @@ thead th {
 thead th:last-child {
   text-align: right;
 }
-
-
 tr.separating-line {
   /*TOP BORDER NOT WORKING*/
   border-top: 3px #000 solid;
@@ -253,6 +251,9 @@ tr.separating-line {
 tr td:first-child {
   width: 50%;
   padding-left: 10px;
+}
+tr td {
+  background-color: white;
 }
 td h3{
   font-size: 1.7em;
@@ -324,17 +325,120 @@ div.text-right {
   width: 90%;
   border: 3px solid black;
   padding: 5px;
-  background-color: white;
   overflow: hidden;
 }
 
-.order-preview {
+.order-review {
+  background-color: white;
   float: right;
-  width: 30%;
+  width: 40%;
+  margin-bottom: 40px;
+  border: 1px solid black;
 }
 .information {
   float: left;
-  width: 70%;
+  width: 50%;
+}
+
+.checkout form {
+  background-color: white;
+}
+form header {
+  /*Push fields down from header*/
+  padding-left: 5px;
+  margin: 0 0 20px 0;
+}
+
+form > div > label, legend {
+  width: 8%;
+}
+form > div > fieldset label {
+	font-size: 90%;
+}
+form > div > div,
+form > div > fieldset > div {
+  /*Controls length of input field*/
+  width: 60%;
+}
+fieldset {
+	border: 0;
+  padding: 0;
+}
+form > div {
+  margin-top: 10px;
+}
+
+
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=password],
+textarea {
+	width: 100%;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=password] {
+  width: 50%;
+}
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=url]:focus,
+input[type=password]:focus,
+textarea:focus {
+  outline: 0;
+  border-color: #4697e4;
+}
+
+@media (max-width: 600px) {
+  form > div {
+    margin: 0 0 15px 0; 
+  }
+  form > div > label,
+  legend {
+	  width: 100%;
+    float: none;
+    margin: 0 0 5px 0;
+  }
+  form > div > div,
+  form > div > fieldset > div {
+    width: 100%;
+    float: none;
+  }
+  input[type=text],
+  input[type=email],
+  input[type=url],
+  input[type=password],
+  textarea,
+  select {
+    width: 100%; 
+  }
+}
+@media (min-width: 1200px) {
+  form > div > label,
+	legend {
+  	text-align: left;
+  }
+}
+
+#order-btn {
+  margin: 10px 10px;
+  font-weight: bold;
+  padding: .5em;
+}
+
+/*Order summary*/
+
+.order-review h3 {
+  text-align: center;
+}
+.order-review table {
+  margin: auto;
 }
 
 /*Image*/
