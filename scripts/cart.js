@@ -77,6 +77,7 @@ for (var i = 0; i < cart_arr.length; i++) {
         tot.innerHTML = "$" + cart_arr[i].price*cart_arr[i].quantity;
     }
 }
+updateCosts();
 //Helper Functions
 function addLine() {
   var row = document.createElement('tr');
@@ -98,39 +99,20 @@ function addClass(base, elename, classname) {
     base.appendChild(ele);
     return ele;
 }
-
 function retrievePrice(s) {
     var p = s.substring(1, s.length);
     return parseInt(p);
 }
-
-// var menu_ele = document.querySelector("body div.menu");
-//
-// /*Creating HTML from "Server Menu Array"*/
-// for (var i = 0; i < menu_arr.length; i++) {
-//     var item = addClass(menu_ele, 'div', 'item');
-//     var content = addClass(item, 'div', 'content');
-//     //Add Image
-//     var image = document.createElement('img');
-//     image.src = menu_arr[i].img;
-//     image.className = 'item-img';
-//     content.appendChild(image);
-//     //Add Description
-//     var desc = addClass(content, 'p', 'item-desc');
-//     //Add name
-//     var itemname = addClass(desc, 'span', 'item-name');
-//     var name_txt = document.createTextNode(menu_arr[i].name);
-//     itemname.appendChild(name_txt);
-//     //Add price
-//     var price = document.createElement('span');
-//     price.className = 'item-price';
-//     var price_txt = document.createTextNode('$' + menu_arr[i].price);
-//     price.appendChild(price_txt);
-//     desc.appendChild(price);
-//     //Add button
-//     var cartbutton = document.createElement('button');
-//     cartbutton.className = 'addtocart-btn';
-//     cartbutton.innerHTML = 'Add to Cart'
-//     content.appendChild(cartbutton);
-//     // Note: Can add text via .innerHTML("") or .createTextNode("")
-// }
+function updateCosts() {
+  var subtot_amt = 0;
+  var salestax = 1;
+  var total = 0;
+  document.querySelectorAll(".item-total").forEach(
+    function(obj) {
+      subtot_amt += retrievePrice(obj.innerHTML);
+    }
+  );
+  document.querySelector("#cart-subtotal").innerHTML = "$" + subtot_amt;
+  total = subtot_amt + salestax;
+  document.querySelector("#cart-total").innerHTML = "$" + total;
+}
