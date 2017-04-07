@@ -3,97 +3,53 @@
 
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Checkout Page</title>
     <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
   </head>
 
   <body>
 
     <header>
-
-      <h1><a href="./main.html" class="logo"><em>HUNGRY BURGERS</em></a></h1>
-
-      <nav>
-        <ul>
-          <li><a href="#">Navigation</a></li>
-          <li><a href="./cart.html">Cart</a></li>
-          <li><a href="#">Register</a></li>
-        </ul>
-        <div class="login-btn"><a href="./signin.html"><b>LOGIN</b></a></div>
-      </nav>
-
+        <h1><a href="./index.html" id="logo">HUNGRY BURGERS</a></h1>
+        <nav>
+            <ul>
+                <a href="./login.html" id="login-link">
+                    <li>Login/Register</li>
+                </a>
+                <a href="#">
+                    <li>Navigation</li>
+                </a>
+                <a href="./cart.html">
+                    <li id="cart-btn">Cart(0 Items)</li>
+                </a>
+                <div id="total-cost">$0</div>
+            </ul>
+        </nav>
     </header>
 
     <div class="checkout">
 
-      <h2>CHECKOUT</h2>
 
       <div class="information">
-        <form action="#">
-
-          <header>
-            <h2>Order Information</h2>
-            <div>Please fill in the order's details.</div>
-          </header>
-
-          <div>
-            <label class="desc" id="title1" for="Field1">Full Name</label>
-            <div>
-              <input id="Field1" name="Field1" type="text" class="field text fn" value="" size="8" tabindex="1">
-            </div>
-          </div>
-
-          <div>
-            <label class="desc" id="title2" for="Field2">
-              Email
-            </label>
-            <div>
-              <input id="Field2" name="Field2" type="email" spellcheck="false" value="" maxlength="255" tabindex="2">
-            </div>
-          </div>
-
-          <div>
-            <fieldset>
-
-              <legend id="title3" class="desc">
-                Select Delivery or Pickup
-              </legend>
-              <div>
-                <input id="radioDefault_2" name="Field2" type="hidden" value="">
-                <div>
-                  <input id="Field2_0" name="Field2" type="radio" value="delivery" tabindex="3">
-                  <label class="choice" for="Field2_0">Delivery</label>
-                </div>
-                <div>
-                  <input id="Field2_1" name="Field2" type="radio" value="pickup" tabindex="4" checked="checked">
-                  <label class="choice" for="Field2_1">Pick Up</label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div>
-            <label class="desc" id="title4" for="Field4">
-              Address
-            </label>
-            <div>
-              <input id="Field4" name="Field4" type="text" class="field text fn" value="" size="8" tabindex="5">
-            </div>
-          </div>
-
-          <div>
-            <label class="desc" id="title5" for="Field5">
-              Payment Information
-            </label>
-            <div>
-              <input id="Field5" name="Field5" type="text" class="field text fn" value="" size="8" tabindex="6">
-            </div>
-          </div>
-
-          <div>
-            <button id="order-btn">Order</button>
-          </div>
-
+        <h2 class="checkout-title">CHECKOUT</h2>
+        <input type="checkbox" id="delivery-switch">
+        <label for="delivery-switch">Check for Delivery</label>
+        <form id="pickup-form" action="" method="post">
+          <input type="tel" placeholder="Phone number (xxxx-xxx-xxxx)" pattern="^\d{4}-\d{3}-\d{4}" required><p></p>
+          <button type='submit'>Confirm Order</button>
         </form>
+        <form id="delivery-form" action="" method="post">
+          <input type="tel" placeholder="Phone number (xxxx-xxx-xxxx)" pattern="^\d{4}-\d{3}-\d{4}" required><p></p>
+          <input type="text" placeholder="Address" required>
+          <p class="payment">Payment Details</p>
+          <input type="tel" placeholder="Card Number" required><p></p>
+          <button type='submit'>Confirm Order</button>
+        </form>
+        </form>
+
       </div>
 
       <div class="order-review">
@@ -127,8 +83,10 @@
 
 
     <footer>
-      <p>Committed to serving the best burgers since yesterday!</p>
-      <div class="contact"><a href="#">Contact</a></div>
+        <p>
+            Committed to serving the best burgers since yesterday!
+            <a href="#"><button class="contact">Contact Information</button></a>
+        </p>
     </footer>
 
   </body>

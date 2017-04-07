@@ -30,7 +30,7 @@ var item5 = {
     price: 1,
     id: 4
 }
-// Produce staggered result in menu
+// Produce staggered result in menu as a test
 // var item6 = {
 //     img: './images/fries.jpg',
 //     name: 'Fries',
@@ -38,16 +38,13 @@ var item5 = {
 //     id: 5
 // }
 var menu_arr = [item1, item2, item3, item4, item5];
-console.log(menu_arr);
 
 var menu_ele = document.querySelector("body div.menu");
 
-/*Creating HTML*/
+/*Creating HTML from "Server Menu Array"*/
 for (var i = 0; i < menu_arr.length; i++) {
     var item = addClass(menu_ele, 'div', 'item');
-    console.log(item);
     var content = addClass(item, 'div', 'content');
-    console.log(content);
     //Add Image
     var image = document.createElement('img');
     image.src = menu_arr[i].img;
@@ -55,10 +52,8 @@ for (var i = 0; i < menu_arr.length; i++) {
     content.appendChild(image);
     //Add Description
     var desc = addClass(content, 'p', 'item-desc');
-    console.log(desc);
     //Add name
     var itemname = addClass(desc, 'span', 'item-name');
-    console.log(itemname);
     var name_txt = document.createTextNode(menu_arr[i].name);
     itemname.appendChild(name_txt);
     //Add price
@@ -72,6 +67,7 @@ for (var i = 0; i < menu_arr.length; i++) {
     cartbutton.className = 'addtocart-btn';
     cartbutton.innerHTML = 'Add to Cart'
     content.appendChild(cartbutton);
+    // Note: Can add text via .innerHTML("") or .createTextNode("")
 }
 
 //Cart Button Increment

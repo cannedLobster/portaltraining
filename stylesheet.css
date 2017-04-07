@@ -11,7 +11,6 @@ body {
 }
 
 /*HEADER ELEMENTS*/
-
 header {
   background-color: #ff8522;
   overflow: hidden;
@@ -114,11 +113,11 @@ footer button.contact:hover{
   max-width: 100%;
   height: auto;
 }
-.menu .item-desc {
+.menu .item .item-desc {
   font-size: 1.3em;
   color: white;
 }
-.menu .item-desc .item-price {
+.menu .item .item-desc .item-price {
   font-style: oblique;
 }
 button.addtocart-btn {
@@ -137,7 +136,8 @@ img {
   height: 256px;
 }*/
 
-/*Cart Content*/
+/*-------------------CART.HTML-------------------*/
+/*-----------------------------------------------*/
 .cart {
   margin: auto;
   margin-top: 5px;
@@ -147,94 +147,68 @@ img {
   padding: 5px;
   background-color: white;
 }
-
 .cart table {
   width: 100%;
-  /* border-spacing: 0 $unit-alpha / 2;
-    border-collapse: separate;
-    margin-top: (-$unit-alpha / 2);*/
 }
-
 .cart h2 {
   text-align: left;
   font-size: 1.5em;
-  text-shadow: 1px 1px white;
 }
-
-.cart thead {
+/*Table header*/
+.cart thead tr{
   background-color: #f21f1f;
 }
-
-thead th {
+.cart table tr td:first-child {
+  width: 60%;
+  padding-left: 10px;
+}
+.cart thead th {
     text-align: left;
     padding: .5em;
     color: white;
 }
-thead th:last-child {
+.cart thead th:last-child {
   text-align: right;
 }
-tr.separating-line {
-  /*TOP BORDER NOT WORKING*/
-  border-top: 3px #000 solid;
-}
-tr td:first-child {
-  width: 50%;
-  padding-left: 10px;
-}
-td h3{
-  font-size: 1.7em;
-  color: red;
-}
-td p{
+/*Cart items*/
+.cart td h3.item-name{
   font-size: 1.5em;
+  color: red;
+  display: inline;
 }
-
-input {
-  width: 4em;
-  height: 3em;
+.cart td p.cart-price{
+  font-size: 1.2em;
 }
-input[type="number"]{
-  display: block;
-  margin: 0 auto;
+.cart input[type="number"] {
+    display: block;
+    margin: 0 auto;
+    width: 10%;
+    padding: 5px;
+    min-width: 25px;
 }
-
-p.cart-total {
+p.item-total {
   text-align: right;
   font-size: 1.5em;
   padding-right: 1em;
 }
-
-th.totals-label {
-  font-size: 1em;
-  text-align: right;
-}
-div.totals-amt {
+.cart th.totals-label,
+.cart div.totals-amt {
   font-size: 1.3em;
   text-align: right;
   padding-right: 20px;
 }
-
-.cart tfoot {
+/*Table footer*/
+.cart tfoot.bottom {
   background-color: #f21f1f;
   color: white;
 }
-tfoot th {
+.cart tfoot.bottom .full-total {
+  font-size: 1.5em;
   text-align: right;
-  padding: .5em;
-}
-tfoot td {
-  text-align: right;
+  font-weight: bold;
   padding-right: 20px;
 }
-th.full-total {
-  font-size: 1.5em;
-}
-div.full-totalamt {
-  font-size: 1.5em;
-  font-weight: bold;
-}
-
-div.text-right {
+.text-right {
   text-align: right;
 }
 #checkout-btn {
@@ -242,8 +216,13 @@ div.text-right {
   font-weight: bold;
   padding: .5em;
 }
+/*Cart Links*/
+.cart table a {
+  text-decoration: none;
+}
 
-/*Checkout Content*/
+/*-------------------CHECKOUT.HTML-------------------*/
+/*---------------------------------------------------*/
 .checkout {
   margin: auto;
   margin-top: 5px;
@@ -251,115 +230,53 @@ div.text-right {
   width: 90%;
   border: 3px solid black;
   padding: 5px;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-around;
 }
-
-.order-review {
+.checkout .information {
   background-color: white;
-  float: right;
-  width: 40%;
-  margin-bottom: 40px;
   border: 1px solid black;
-}
-.information {
-  float: left;
   width: 50%;
+  text-align: center;
 }
-
-.checkout form {
+.checkout .order-review {
   background-color: white;
+  border: 1px solid black;
+  width: 30%;
 }
-form header {
-  /*Push fields down from header*/
-  padding-left: 5px;
-  margin: 0 0 20px 0;
+.checkout .information h2.checkout-title {
+  font-size: 2em;
+  text-align: left;
+  margin-left: 20px;
 }
-
-form > div > label, legend {
-  width: 8%;
+/*Information content*/
+.information label {
+  font-weight: bold;
+  font-size: 2em;
 }
-form > div > fieldset label {
-	font-size: 90%;
-}
-form > div > div,
-form > div > fieldset > div {
-  /*Controls length of input field*/
+.checkout .information input{
   width: 60%;
+  min-width: 185px;
 }
-fieldset {
-	border: 0;
-  padding: 0;
+#delivery-switch {
+  height: 20px;
+  width: 20px;
 }
-form > div {
-  margin-top: 10px;
+#delivery-form {
+  display: none;
 }
-
-
-input[type=text],
-input[type=email],
-input[type=url],
-input[type=password],
-textarea {
-	width: 100%;
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+#delivery-switch:checked~#delivery-form {
+  display: block;
 }
-input[type=text],
-input[type=email],
-input[type=url],
-input[type=password] {
-  width: 50%;
+#delivery-switch:checked~#pickup-form {
+  display: none;
 }
-input[type=text]:focus,
-input[type=email]:focus,
-input[type=url]:focus,
-input[type=password]:focus,
-textarea:focus {
-  outline: 0;
-  border-color: #4697e4;
-}
-
-@media (max-width: 600px) {
-  form > div {
-    margin: 0 0 15px 0;
-  }
-  form > div > label,
-  legend {
-	  width: 100%;
-    float: none;
-    margin: 0 0 5px 0;
-  }
-  form > div > div,
-  form > div > fieldset > div {
-    width: 100%;
-    float: none;
-  }
-  input[type=text],
-  input[type=email],
-  input[type=url],
-  input[type=password],
-  textarea,
-  select {
-    width: 100%;
-  }
-}
-@media (min-width: 1200px) {
-  form > div > label,
-	legend {
-  	text-align: left;
-  }
-}
-
-#order-btn {
+.checkout button {
   margin: 10px 10px;
   font-weight: bold;
   padding: .5em;
 }
-
 /*Order summary*/
-
 .order-review h3 {
   text-align: center;
 }
@@ -367,14 +284,48 @@ textarea:focus {
   margin: auto;
 }
 
-/*Login content*/
-
-.login {
+/*-------------------LOGIN.HTML-------------------*/
+/*------------------------------------------------*/
+.login-reg {
   margin: auto;
   margin-top: 5px;
   margin-bottom: 5px;
   width: 90%;
   border: 3px solid black;
-  padding: 10px;
+  padding: 5px;
   background-color: white;
+}
+/*.login-reg {
+  display: flex;
+  justify-content: space-around;
+}*/
+/*Login/Register content*/
+.login-reg form {
+  margin: 0 auto;
+  width: 40%;
+}
+.login-reg input {
+  margin-bottom: 3px;
+  padding: 0;
+  width: 100%;
+  border: 1px solid #CCC;
+}
+.login-reg form label {
+  cursor: pointer;
+  margin-left: 40px;;
+  border: 1px solid gray;;
+  padding: 4px;
+}
+.login-reg input {
+  padding: 4px;
+}
+#register-form,
+#form-switch {
+  display: none;
+}
+#form-switch:checked~#register-form{
+  display: block;
+}
+#form-switch:checked~#login-form {
+  display: none;
 }
