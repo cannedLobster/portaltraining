@@ -1,127 +1,108 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
-  </head>
 
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main Menu</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
+</head>
+
+<body>
 
     <header>
 
-      <h1><a href="./main.html" class="logo"><em>HUNGRY BURGERS</em></a></h1>
+        <h1><a href="./index.html" id="logo">HUNGRY BURGERS</a></h1>
 
       <nav>
-        <ul>
-          <li><a href="#">Navigation</a></li>
-          <li><a href="./cart.html">Cart</a></li>
-          <li><a href="#">Register</a></li>
-        </ul>
-        <div class="login-btn"><a href="./signin.html"><b>LOGIN</b></a></div>
+          <ul>
+              <a href="#"><li>Register/Login</li></a>
+              <a href="#"><li>Navigation</li></a>
+              <a href="./cart.html"><li id="cart-btn">Cart(0 Items)</li></a>
+              <div id="total-cost">$0</div>
+          </ul>
       </nav>
 
-    </header>
+  </header>
 
     <div class="menu">
 
-      <h2>MENU</h2>
+        <h2>MENU</h2>
 
-      <div class="square">
-        <div class="content">
-          <a href="#"><img class="rs" src="plainburger.jpg" alt=""></a>
-          <p class="label rs">Plain Burger <span class="price">$4</span>
-            <a class="addtocart-btn" href="#"> <span>Add to Cart</span></a>
-          </p>
+        <div class="item">
+          <div class="content">
+            <img class="item-img" src="./images/plainburger.jpg" alt="">
+            <p class="item-desc">
+              <span class="item-name">Plain Burger</span>
+              <span class="item-price">$4</span>
+            </p>
+            <button class="addtocart-btn">Add to Cart</button>
+          </div>
         </div>
-      </div>
-      <div class="square">
-        <div class="content">
-          <a href="#"><img class="rs" src="chickenburger.jpg" alt=""></a>
-          <p class="label rs">Chicken Burger <span class="price">$5</span>
-            <a class="addtocart-btn" href="#"> <span>Add to Cart</span></a>
-          </p>
+        <div class="item">
+          <div class="content">
+            <img class="item-img" src="./images/chickenburger.jpg" alt="">
+            <p class="item-desc">
+              <span class="item-name">Chicken Burger</span>
+              <span class="item-price">$5</span>
+            </p>
+            <button class="addtocart-btn">Add to Cart</button>
+          </div>
         </div>
-      </div>
-      <div class="square">
-        <div class="content">
-          <a href="#"><img class="rs" src="cheeseburger.jpg" alt=""></a>
-          <p class="label rs">Quarter-Pound Cheeseburger <span class="price">$6</span>
-            <a class="addtocart-btn" href="#"> <span>Add to Cart</span></a>
-          </p>
+        <div class="item">
+          <div class="content">
+            <img class="item-img" src="./images/cheeseburger.jpg" alt="">
+            <p class="item-desc">
+              <span class="item-name">Quarter-Pounder With Cheese</span>
+              <span class="item-price">$6</span>
+            </p>
+            <button class="addtocart-btn">Add to Cart</button>
+          </div>
         </div>
-      </div>
-      <div class="square">
-        <div class="content">
-          <a href="#"><img class="rs" src="cheeseburger.jpg" alt=""></a>
-          <p class="label rs">Royale With Cheese <span class="price">$7</span>
-            <a class="addtocart-btn" href="#"> <span>Add to Cart</span></a>
-          </p>
+        <div class="item">
+          <div class="content">
+            <img class="item-img" src="./images/cheeseburger.jpg" alt="">
+            <p class="item-desc">
+              <span class="item-name">Royal With Cheese</span>
+              <span class="item-price">$7</span>
+            </p>
+            <button class="addtocart-btn">Add to Cart</button>
+          </div>
         </div>
-      </div>
-      <div class="square">
-        <div class="content">
-          <a href="#"><img class="rs" src="drink.jpg" alt=""></a>
-          <p class="label rs">Drink <span class="price">$1</span>
-            <a class="addtocart-btn" href="#"> <span>Add to Cart</span></a>
-          </p>
+        <div class="item">
+          <div class="content">
+            <img class="item-img" src="./images/drink.jpg" alt="">
+            <p class="item-desc">
+              <span class="item-name">Drink</span>
+              <span class="item-price">$1</span>
+            </p>
+            <button class="addtocart-btn">Add to Cart</button>
+          </div>
         </div>
-      </div>
-      <div class="square">
-        <div class="content">
-          <a href="#"><img class="rs" src="fries.jpg" alt=""></a>
-          <p class="label rs">Fries <span class="price">$2</span>
-            <a class="addtocart-btn" href="#"> <span>Add to Cart</span></a>
-          </p>
+        <div class="item">
+          <div class="content">
+            <img class="item-img" src="./images/fries.jpg" alt="">
+            <p class="item-desc">
+              <span class="item-name">Fries</span>
+              <span class="item-price">$2</span>
+            </p>
+            <button class="addtocart-btn">Add to Cart</button>
+          </div>
         </div>
-      </div>
-
-      <p class="hidden"> This should be fixed lol. </p>
-
-      <!--<div class="container">
-<div class="container__item">
-<a href="#"><img src="cheeseburger.jpg" alt=""></a>
-<p class="label">Burger $5</p>
-</div>
-<div class="container__item">
-<a href="#"><img src="cheeseburger.jpg" alt=""></a>
-<p class="label">Cheeseburger $6</p>
-</div>
-<div class="container__item">
-<a href="#"><img src="drink.jpg" alt=""></a>
-<p class="label">Drink $1</p>
-</div>
-<div class="container__item">
-<a href="#"><img src="fries.jpg" alt=""></a>
-<p class="label">Fries $2</p>
-</div>
-</div>
-
-
-<div class="grid">
-<div class="box a">
-<a href="#"><img src="cheeseburger.jpg" alt=""></a>
-<p class="label">Burger $5</p>
-</div>
-<div class="box b">
-<a href="#"><img src="cheeseburger.jpg" alt=""></a>
-<p class="label">Cheeseburger $6</p>
-</div>
-<div class="box c">
-<a href="#"><img src="drink.jpg" alt=""></a>
-<p class="label">Drink $1</p>
-</div>
-<div class="box d">
-<a href="#"><img src="fries.jpg" alt=""></a>
-<p class="label">Fries $2</p>
-</div>
-</div>-->
 
     </div>
 
     <footer>
-      <p>Committed to serving the best burgers since yesterday!</p>
-      <div class="contact"><a href="#">Contact</a></div>
+        <p>
+          Committed to serving the best burgers since yesterday!
+          <a href="#"><button class="contact">Contact Information</button></a>
+        </p>
+
     </footer>
 
-  </body>
+    <script src="./scripts/menu.js"></script>
+</body>
+
 </html>
