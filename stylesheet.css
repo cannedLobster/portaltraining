@@ -182,7 +182,7 @@ img {
 .cart input[type="number"] {
     display: block;
     margin: 0 auto;
-    width: 10%;
+    width: 20%;
     padding: 5px;
     min-width: 25px;
 }

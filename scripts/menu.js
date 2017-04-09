@@ -31,43 +31,59 @@ var item5 = {
     id: 4
 }
 // Produce staggered result in menu as a test
-// var item6 = {
-//     img: './images/fries.jpg',
-//     name: 'Fries',
-//     price: 2,
-//     id: 5
-// }
-var menu_arr = [item1, item2, item3, item4, item5];
+var item6 = {
+    img: './images/fries.jpg',
+    name: 'Fries',
+    price: 2,
+    id: 5
+}
+
+
+//var menu_arr = [item1, item2, item3, item4, item5, item6];
+
+//Retrieving from Server
+var menu_arr = [];
+//Callback function
+$.get("http://b5112808.ngrok.io/menu/sunny", function(response) {
+    for (var i in response) {
+        console.log(i + "|" + response[i]);
+        menu_arr.push(response[i]);
+    }
+    generateMenu(menu_arr);
+});
+console.log(menu_arr);
 
 var menu_ele = document.querySelector("body div.menu");
 
 /*Creating HTML from "Server Menu Array"*/
-for (var i = 0; i < menu_arr.length; i++) {
-    var item = addClass(menu_ele, 'div', 'item');
-    var content = addClass(item, 'div', 'content');
-    //Add Image
-    var image = document.createElement('img');
-    image.src = menu_arr[i].img;
-    image.className = 'item-img';
-    content.appendChild(image);
-    //Add Description
-    var desc = addClass(content, 'p', 'item-desc');
-    //Add name
-    var itemname = addClass(desc, 'span', 'item-name');
-    var name_txt = document.createTextNode(menu_arr[i].name);
-    itemname.appendChild(name_txt);
-    //Add price
-    var price = document.createElement('span');
-    price.className = 'item-price';
-    var price_txt = document.createTextNode('$' + menu_arr[i].price);
-    price.appendChild(price_txt);
-    desc.appendChild(price);
-    //Add button
-    var cartbutton = document.createElement('button');
-    cartbutton.className = 'addtocart-btn';
-    cartbutton.innerHTML = 'Add to Cart'
-    content.appendChild(cartbutton);
-    // Note: Can add text via .innerHTML("") or .createTextNode("")
+function generateMenu(menu) {
+    for (var i = 0; i < menu.length; i++) {
+        var item = addClass(menu_ele, 'div', 'item');
+        var content = addClass(item, 'div', 'content');
+        //Add Image
+        var image = document.createElement('img');
+        image.src = menu[i].img;
+        image.className = 'item-img';
+        content.appendChild(image);
+        //Add Description
+        var desc = addClass(content, 'p', 'item-desc');
+        //Add name
+        var itemname = addClass(desc, 'span', 'item-name');
+        var name_txt = document.createTextNode(menu[i].name);
+        itemname.appendChild(name_txt);
+        //Add price
+        var price = document.createElement('span');
+        price.className = 'item-price';
+        var price_txt = document.createTextNode('$' + menu[i].price);
+        price.appendChild(price_txt);
+        desc.appendChild(price);
+        //Add button
+        var cartbutton = document.createElement('button');
+        cartbutton.className = 'addtocart-btn';
+        cartbutton.innerHTML = 'Add to Cart'
+        content.appendChild(cartbutton);
+        // Note: Can add text via .innerHTML("") or .createTextNode("")
+    }
 }
 
 //Cart Button Increment
