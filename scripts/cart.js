@@ -79,37 +79,6 @@ for (var i = 0; i < cart_arr.length; i++) {
 }
 updateCosts();
 
-//Remove Button function
-/* NOTES
-Don't forget about closing tags for single thingie
-for (var i ---) {
-  var item = menu[i];
-  var itemElement = `HTML CODE that you can insert
-  js elements within the innerHTML
-  ex: ${item.title}
-  id"menu-${i}""' `use backtick`
-}
-
-jquery obj -> $('#menu'); ONLY RETURNS JQUERY TYPE obj
-not a reference to the obj itself
-$('#menu')[0] -> HTML obj
-new element $(<div/>').addClass('menu-item');
-var a = $('<div/>').addClass('title').html(item.title);
-^html == innerHTML
-.html(`Ingrediaents: ${item.ingredients}`)
-.attr('id', `menu-${i}`)
-recreate elements that are use frequently:
-var button = $('<button/>').addClass('button').text('Add to Cart');
-^can clone
-.on('click', function(e) {
-this->RAW HTML, must convert to jquery to use its helpers
-var index = $(this).data('index')
-})
-click anywhere to remove modal
-use only one modal and update it according to image clicked
-*/
-// document.querySelectorAll("#cart-remove-btn").forEach();
-
 //Helper Functions
 function addLine() {
   var row = document.createElement('tr');

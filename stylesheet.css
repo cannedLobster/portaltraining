@@ -104,7 +104,6 @@ footer button.contact:hover{
   display: inline-block;
   width: 30%;
   padding: 10px;
-  margin-bottom: 2px;
 
   border-radius: 20px;
   background-color: gray;
@@ -112,22 +111,51 @@ footer button.contact:hover{
 .menu .item .item-img {
   max-width: 100%;
   height: auto;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
 }
-.menu .item .item-desc {
+.menu .item .content {
   font-size: 1.3em;
   color: white;
 }
-.menu .item .item-desc .item-price {
+.menu .item .item-price {
   font-style: oblique;
+}
+.menu .item .item-desc {
+  display: none;
 }
 button.addtocart-btn {
   background-color: #d0451b;
   border-radius: 32px;
   border: 1px solid #942911;
   cursor: pointer;
+  display: block;
+  margin: 0 auto;
 }
 button.addtocart-btn:hover {
   background-color: orange;
+}
+/*Modal*/
+.menu .modal {
+  position: fixed;
+  right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
+  width: 40%;
+
+  border-radius: 20px;
+  background: rgba(115,215,255,.95);
+  display: none;
+  cursor: pointer;
+}
+#modal_desc {
+  font-size: 1.3em;
+}
+#modal_price {
+  font-style: oblique;
+  font-size: 1.5em;
 }
 
 /*Expecting images to already be 256/256
