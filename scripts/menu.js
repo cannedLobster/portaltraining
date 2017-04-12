@@ -24,11 +24,48 @@ $("#menu_modal").on("click", function(event) {
   $("#menu_modal").css("display", "none");
 });
 
+/*Posting menu onto server*/
+clearServerThruAJAX();
+var local_menu_arr = [
+  { name: "Fries",
+    price: 2,
+    img: "./images/fries.jpg",
+    desc: "Quality fresh potatos served to order! Lightly seasoned with salt."},
+  { name: "Drink",
+    price: 1,
+    img: "./images/drink.jpg",
+    desc: "Cool drink of your choice. Best on a hot day!"},
+  { name: "Plain burger",
+    price: 4,
+    img: "./images/plainburger.jpg",
+    desc: "The plain burger. Simple satisfaction guaranteed."},
+  { name: "Chicken Burger",
+    price: 5,
+    img: "./images/chickenburger.jpg",
+    desc: "Made from the free range chickens from Arkansas. Absolutely astounding taste."},
+  { name: "Quarter-Pounder With Cheese",
+    price: 6,
+    img: "./images/cheeseburger.jpg",
+    desc: "The most famous cheeseburger made with the best beef and the freshest cheese available just for you."},
+  { name: "Royale With Cheese",
+    price: 7,
+    img: "./images/cheeseburger.jpg",
+    desc: "The more \"premium\" french version of the quarter-pounder with cheese."}
+];
+for (var i = 0; i < local_menu_arr.length; i++) {
+  $.post("http://thiman.me:1337/menu/sunny",
+    local_menu_arr[i],
+    function(data, status) {
+      //console.log("Data: " + data + "\nStatus: " + status);
+    });
+}
+
+
 /*Generating Menu through inputted Array from Server*/
 var menu_arr = [];
-//Callback function
 $.get("http://thiman.me:1337/menu/sunny", function(response) {
     for (var i in response) {
+        console.log(response[i]);
         menu_arr.push(response[i]);
     }
     generateMenu(menu_arr);
@@ -77,4 +114,15 @@ function generateMenu(menu) {
         var desc = addClass(content, 'p', 'item-desc');
         desc.innerHTML = menu[i].desc;
     }
+}
+function clearServerThruAJAX() {
+  $.get("http://thiman.me:1337/menu/sunny", function(response) {
+      for (var i in response) {
+        console.log(response[i]._id + "|" + response[i].name);
+        $.ajax({
+          url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
+          type: "DELETE",
+        });
+      }
+  });
 }
