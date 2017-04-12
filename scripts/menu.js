@@ -25,7 +25,6 @@ $("#menu_modal").on("click", function(event) {
 });
 
 /*Posting menu onto server*/
-clearServerThruAJAX();
 var local_menu_arr = [
   { name: "Fries",
     price: 2,
@@ -52,25 +51,32 @@ var local_menu_arr = [
     img: "./images/cheeseburger.jpg",
     desc: "The more \"premium\" french version of the quarter-pounder with cheese."}
 ];
-for (var i = 0; i < local_menu_arr.length; i++) {
-  $.post("http://thiman.me:1337/menu/sunny",
-    local_menu_arr[i],
-    function(data, status) {
-      //console.log("Data: " + data + "\nStatus: " + status);
-    });
-}
-
-
 /*Generating Menu through inputted Array from Server*/
 var menu_arr = [];
 $.get("http://thiman.me:1337/menu/sunny", function(response) {
-    for (var i in response) {
-        console.log(response[i]);
-        menu_arr.push(response[i]);
+  for (var i in response) {
+    menu_arr.push(response[i]);
+  }
+  if (menu_arr.length == 0) { //If server menu is empty, post w/ local data and re-get the menu
+    for (var i = 0; i < local_menu_arr.length; i++) {
+      $.post("http://thiman.me:1337/menu/sunny",
+      local_menu_arr[i],
+      function(data, status) {
+        //console.log("Data: " + data + "\nStatus: " + status);
+      });
     }
+    $.get("http://thiman.me:1337/menu/sunny", function(response) {
+      for (var i in response) {
+        menu_arr.push(response[i]);
+      }
+      generateMenu(menu_arr);
+    })
+  } else {
     generateMenu(menu_arr);
-});
-console.log(menu_arr);
+  }
+})
+
+// clearServerThruAJAX();
 
 
 /*Helper Functions*/
@@ -85,8 +91,8 @@ function retrievePrice(s) {
     return parseInt(p);
 }
 /*Creating HTML from "Server Menu Array"*/
-var menu_ele = document.querySelector("body div.menu");
 function generateMenu(menu) {
+    var menu_ele = document.querySelector("body div.menu");
     for (var i = 0; i < menu.length; i++) {
         var item = addClass(menu_ele, 'div', 'item');
         var content = addClass(item, 'div', 'content');
@@ -117,12 +123,12 @@ function generateMenu(menu) {
 }
 function clearServerThruAJAX() {
   $.get("http://thiman.me:1337/menu/sunny", function(response) {
-      for (var i in response) {
-        console.log(response[i]._id + "|" + response[i].name);
-        $.ajax({
-          url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
-          type: "DELETE",
-        });
-      }
+    for (var i in response) {
+      $.ajax({
+        url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
+        type: "DELETE",
+        async: false
+      });
+    }
   });
 }
