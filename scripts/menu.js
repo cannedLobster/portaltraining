@@ -8,12 +8,29 @@ $("div.menu").on("click", ".item .content button.addtocart-btn", function(event)
   totalCost += retrievePrice(this.parentElement.querySelector(".item-price").innerHTML);
   cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
   totalamt.innerHTML = "$" + totalCost;
+  var item_name = this.parentElement.querySelector(".item-name").innerHTML;
+  $.get("http://thiman.me:1337/cart/sunny", function(response) {
+    var current_quantity;
+    var item_id;
+    for (var i in response) {
+      if (response[i].name == item_name) {
+        current_quantity = response[i].quantity;
+        item_id = response[i]._id;
+        break;
+      }
+    }
+    $.ajax({
+      url: "http://thiman.me:1337/cart/sunny/" + item_id,
+      data: {
+        quantity: parseInt(current_quantity)+1
+      }
+    });
+  });
 });
 
 //Modal operation w/ event delegation
 $("div.menu").on("click", ".item .content img.item-img", function(event) {
   $("#menu_modal.modal").css("display", "block");
-  console.log(this.parentElement.querySelector(".item-img").getAttribute("src"));
   $("#modal_title").html(this.parentElement.querySelector(".item-name").innerHTML);
   $("#modal_img").attr("src",this.parentElement.querySelector(".item-img").getAttribute("src"));
   $("#modal_desc").html(this.parentElement.querySelector(".item-desc").innerHTML);
@@ -25,55 +42,16 @@ $("#menu_modal").on("click", function(event) {
 });
 
 /*Posting menu onto server*/
-var local_menu_arr = [
-  { name: "Fries",
-    price: 2,
-    img: "./images/fries.jpg",
-    desc: "Quality fresh potatos served to order! Lightly seasoned with salt."},
-  { name: "Drink",
-    price: 1,
-    img: "./images/drink.jpg",
-    desc: "Cool drink of your choice. Best on a hot day!"},
-  { name: "Plain burger",
-    price: 4,
-    img: "./images/plainburger.jpg",
-    desc: "The plain burger. Simple satisfaction guaranteed."},
-  { name: "Chicken Burger",
-    price: 5,
-    img: "./images/chickenburger.jpg",
-    desc: "Made from the free range chickens from Arkansas. Absolutely astounding taste."},
-  { name: "Quarter-Pounder With Cheese",
-    price: 6,
-    img: "./images/cheeseburger.jpg",
-    desc: "The most famous cheeseburger made with the best beef and the freshest cheese available just for you."},
-  { name: "Royale With Cheese",
-    price: 7,
-    img: "./images/cheeseburger.jpg",
-    desc: "The more \"premium\" french version of the quarter-pounder with cheese."}
-];
+
+/*Local cart data*/
+
 /*Generating Menu through inputted Array from Server*/
 var menu_arr = [];
 $.get("http://thiman.me:1337/menu/sunny", function(response) {
   for (var i in response) {
     menu_arr.push(response[i]);
   }
-  if (menu_arr.length == 0) { //If server menu is empty, post w/ local data and re-get the menu
-    for (var i = 0; i < local_menu_arr.length; i++) {
-      $.post("http://thiman.me:1337/menu/sunny",
-      local_menu_arr[i],
-      function(data, status) {
-        //console.log("Data: " + data + "\nStatus: " + status);
-      });
-    }
-    $.get("http://thiman.me:1337/menu/sunny", function(response) {
-      for (var i in response) {
-        menu_arr.push(response[i]);
-      }
-      generateMenu(menu_arr);
-    })
-  } else {
     generateMenu(menu_arr);
-  }
 })
 
 // clearServerThruAJAX();
@@ -113,6 +91,7 @@ function generateMenu(menu) {
         content.appendChild(price);
         //Add button
         var cartbutton = addClass(content, 'button', 'addtocart-btn');
+        cartbutton.id = menu[i]._id;
         cartbutton.innerHTML = 'Add to Cart'
         content.appendChild(cartbutton);
         // Note: Can add text via .innerHTML("") or .createTextNode("")

@@ -1,36 +1,3 @@
-/*Local cart data*/
-var local_cart_arr = [
-  { name: "Fries",
-    price: 2,
-    img: "./images/fries.jpg",
-    desc: "Quality fresh potatos served to order! Lightly seasoned with salt.",
-    quantity: 3},
-  { name: "Drink",
-    price: 1,
-    img: "./images/drink.jpg",
-    desc: "Cool drink of your choice. Best on a hot day!",
-    quantity: 3},
-  { name: "Plain burger",
-    price: 4,
-    img: "./images/plainburger.jpg",
-    desc: "The plain burger. Simple satisfaction guaranteed.",
-    quantity: 2},
-  { name: "Chicken Burger",
-    price: 5,
-    img: "./images/chickenburger.jpg",
-    desc: "Made from the free range chickens from Arkansas. Absolutely astounding taste.",
-    quantity: 1},
-  { name: "Quarter-Pounder With Cheese",
-    price: 6,
-    img: "./images/cheeseburger.jpg",
-    desc: "The most famous cheeseburger made with the best beef and the freshest cheese available just for you.",
-    quantity: 0},
-  { name: "Royale With Cheese",
-    price: 7,
-    img: "./images/cheeseburger.jpg",
-    desc: "The more \"premium\" french version of the quarter-pounder with cheese.",
-    quantity: 1}
-];
 /*Inputting "Server" sent cart items*/
 // clearServerThruAJAX();
 var cart_arr = [];
@@ -38,23 +5,7 @@ $.get("http://thiman.me:1337/cart/sunny", function(response) {
   for (var i in response) {
     cart_arr.push(response[i]);
   }
-  if (cart_arr.length == 0) {
-    for (var i = 0; i < local_cart_arr.length; i++) {
-      $.post("http://thiman.me:1337/cart/sunny",
-      local_cart_arr[i],
-    function(data, status) {
-      //console.log("Data: " + data + "\nStatus: " + status);
-    });
-    }
-    $.get("http://thiman.me:1337/menu/sunny", function(response) {
-      for (var i in response) {
-        cart_arr.push(response[i]);
-      }
-      generateCart(menu_arr);
-    });
-  } else {
-    generateCart(cart_arr);
-  }
+  generateCart(cart_arr);
   updateCosts();
 });
 //Update Costs
@@ -62,6 +13,14 @@ $(".cart table").on("change", "tr td input.cart-quantity", function(event) {
     var total = parseInt(this.value)
       * retrievePrice(this.parentElement.parentElement.querySelector("tr td p.cart-price").innerHTML);
     this.parentElement.parentElement.querySelector("p.item-total").innerHTML = "$"+total;
+    var item_id = this.id.slice(2);
+    $.ajax({
+      url: "http://thiman.me:1337/cart/sunny/" + item_id,
+      data: {
+        quantity: total
+      },
+      type: "PATCH"
+    });
     updateCosts();
 });
 //Update removal
@@ -72,6 +31,14 @@ $(".cart table").on("click", "tr td button.cart-remove-btn", function(event) {
     var item = $(this).parent().parent();
     item.next().remove(); //Remove line
     item.remove();
+    var item_id = this.id.slice(2);
+    $.ajax({
+      url: "http://thiman.me:1337/cart/sunny/" + item_id,
+      data: {
+        quantity: 0
+      },
+      type: "PATCH"
+    });
     updateCosts();
 });
 
@@ -90,10 +57,10 @@ function createCartElement(item) {
     <td>
       <a href="./index.html"><h3 class="item-name">${item.name}</h3></a>
       <p class="cart-price">\$${item.price}</p>
-        <button class="cart-remove-btn">REMOVE</button>
+        <button class="cart-remove-btn" id="r-${item._id}">REMOVE</button>
     </td>
     <td>
-      <input type='number' value='${item.quantity}' class="cart-quantity" min="1" max="1000">
+      <input type='number' id="c-${item._id}" value='${item.quantity}' class="cart-quantity" min="1" max="1000">
     </td>
     <td>
       <p class="item-total">\$${total}</p>
