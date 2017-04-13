@@ -23,7 +23,8 @@ $("div.menu").on("click", ".item .content button.addtocart-btn", function(event)
       url: "http://thiman.me:1337/cart/sunny/" + item_id,
       data: {
         quantity: parseInt(current_quantity)+1
-      }
+      },
+      type: "PATCH"
     });
   });
 });
