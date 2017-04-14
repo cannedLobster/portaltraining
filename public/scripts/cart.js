@@ -1,7 +1,7 @@
 /*Inputting "Server" sent cart items*/
 // clearServerThruAJAX();
 var cart_arr = [];
-$.get("http://thiman.me:1337/cart/sunny", function(response) {
+$.get("http://localhost:3000/cart", function(response) {
   for (var i in response) {
     cart_arr.push(response[i]);
   }
@@ -10,16 +10,25 @@ $.get("http://thiman.me:1337/cart/sunny", function(response) {
 });
 //Update Costs
 $(".cart table").on("change", "tr td input.cart-quantity", function(event) {
+    var newQty = parseInt(this.value);
     var total = parseInt(this.value)
       * retrievePrice(this.parentElement.parentElement.querySelector("tr td p.cart-price").innerHTML);
     this.parentElement.parentElement.querySelector("p.item-total").innerHTML = "$"+total;
     var item_id = this.id.slice(2);
-    $.ajax({
-      url: "http://thiman.me:1337/cart/sunny/" + item_id,
-      data: {
-        quantity: total
-      },
-      type: "PATCH"
+    $.get("http://localhost:3000/cart/" + item_id, function(response) {
+      console.log(response);
+      console.log(response[0]);
+      totalCount += newQty - response[0].qty;
+      totalCost += (newQty-response[0].qty) * response[0].price;
+      $.ajax({
+        url: "http://localhost:3000/cart/" + item_id,
+        data: {
+          qty: newQty
+        },
+        type: "PATCH"
+      });
+      cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
+      totalamt.innerHTML = "$" + totalCost;
     });
     updateCosts();
 });
@@ -33,25 +42,49 @@ $(".cart table").on("click", "tr td button.cart-remove-btn", function(event) {
     item.remove();
     var item_id = this.id.slice(2);
     $.ajax({
-      url: "http://thiman.me:1337/cart/sunny/" + item_id,
+      url: "http://localhost:3000/cart/" + item_id,
       data: {
-        quantity: 0
+        qty: 0
       },
       type: "PATCH"
     });
+    //update cart header
+    totalCount -= this.parentElement.parentElement
+      .querySelector("td input.cart-quantity").value;
+    totalCost -= retrievePrice(this.parentElement
+      .querySelector("p.cart-price").innerHTML)
+       * this.parentElement.parentElement
+         .querySelector("td input.cart-quantity").value;
+    cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
+    totalamt.innerHTML = "$" + totalCost;
     updateCosts();
 });
+
+//Update cart header
+var cartBtn = document.querySelector('#cart-btn');
+var totalamt = document.querySelector("#total-cost");
+var totalCount = 0;
+var totalCost = 0;
+$.get("http://localhost:3000/cart", function(response) {
+  for (var i in response) {
+    totalCount += response[i].qty;
+    totalCost += (response[i].qty * response[i].price)
+  }
+  cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
+  totalamt.innerHTML = "$" + totalCost;
+});
+
 
 
 //Helper Functions
 function generateCart(arr) {
   for (var i = 0; i < arr.length; i++) {
-    if (arr[i].quantity != 0)
+    if (arr[i].qty != 0)
       $("body div.cart table tr.endofcart").before(createCartElement(arr[i]));
   }
 }
 function createCartElement(item) {
-  var total = parseInt(item.price) * parseInt(item.quantity);
+  var total = parseInt(item.price) * parseInt(item.qty);
   var item_element = `
   <tr>
     <td>
@@ -60,7 +93,7 @@ function createCartElement(item) {
         <button class="cart-remove-btn" id="r-${item._id}">REMOVE</button>
     </td>
     <td>
-      <input type='number' id="c-${item._id}" value='${item.quantity}' class="cart-quantity" min="1" max="1000">
+      <input type='number' id="c-${item._id}" value='${item.qty}' class="cart-quantity" min="1" max="1000">
     </td>
     <td>
       <p class="item-total">\$${total}</p>
@@ -115,17 +148,17 @@ function updateCosts() {
   total = subtot_amt + salestax;
   document.querySelector("#cart-total").innerHTML = "$" + total;
 }
-function clearServerThruAJAX() {
-  $.get("http://thiman.me:1337/menu/sunny", function(response) {
-    for (var i in response) {
-      $.ajax({
-        url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
-        type: "DELETE",
-        async: false
-      });
-    }
-  });
-}
+// function clearServerThruAJAX() {
+//   $.get("http://thiman.me:1337/menu/sunny", function(response) {
+//     for (var i in response) {
+//       $.ajax({
+//         url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
+//         type: "DELETE",
+//         async: false
+//       });
+//     }
+//   });
+// }
 /*Old HTML generator*/
 // var table_ele = document.querySelector("body div.cart table tbody");
 // var eoc = document.querySelector("body div.cart table tr.endofcart"); // End of Cart to add before

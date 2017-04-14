@@ -3,27 +3,33 @@ var cartBtn = document.querySelector('#cart-btn');
 var totalamt = document.querySelector("#total-cost");
 var totalCount = 0;
 var totalCost = 0;
+$.get("http://localhost:3000/cart", function(response) {
+  for (var i in response) {
+    totalCount += response[i].qty;
+    totalCost += (response[i].qty * response[i].price)
+  }
+  cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
+  totalamt.innerHTML = "$" + totalCost;
+});
 $("div.menu").on("click", ".item .content button.addtocart-btn", function(event) {
   totalCount++; // Increment quantity
   totalCost += retrievePrice(this.parentElement.querySelector(".item-price").innerHTML);
   cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
   totalamt.innerHTML = "$" + totalCost;
-  var item_name = this.parentElement.querySelector(".item-name").innerHTML;
-  $.get("http://thiman.me:1337/cart/sunny", function(response) {
+  // var item_name = this.parentElement.querySelector(".item-name").innerHTML;
+  var menuID = this.id;
+  $.get("http://localhost:3000/cart", function(response) {
     var current_quantity;
     var item_id;
     for (var i in response) {
-      if (response[i].name == item_name) {
-        current_quantity = response[i].quantity;
+      if (response[i].menu_id == menuID) {
+        // current_quantity = response[i].quantity;
         item_id = response[i]._id;
         break;
       }
     }
     $.ajax({
-      url: "http://thiman.me:1337/cart/sunny/" + item_id,
-      data: {
-        quantity: parseInt(current_quantity)+1
-      },
+      url: "http://localhost:3000/cart/" + item_id + "/inc",
       type: "PATCH"
     });
   });
@@ -48,12 +54,12 @@ $("#menu_modal").on("click", function(event) {
 
 /*Generating Menu through inputted Array from Server*/
 var menu_arr = [];
-$.get("http://thiman.me:1337/menu/sunny", function(response) {
+$.get("http://localhost:3000/menu", function(response) {
   for (var i in response) {
     menu_arr.push(response[i]);
   }
     generateMenu(menu_arr);
-})
+});
 
 // clearServerThruAJAX();
 
@@ -92,7 +98,7 @@ function generateMenu(menu) {
         content.appendChild(price);
         //Add button
         var cartbutton = addClass(content, 'button', 'addtocart-btn');
-        cartbutton.id = menu[i]._id;
+        cartbutton.id = menu[i].menu_id;
         cartbutton.innerHTML = 'Add to Cart'
         content.appendChild(cartbutton);
         // Note: Can add text via .innerHTML("") or .createTextNode("")
@@ -101,14 +107,14 @@ function generateMenu(menu) {
         desc.innerHTML = menu[i].desc;
     }
 }
-function clearServerThruAJAX() {
-  $.get("http://thiman.me:1337/menu/sunny", function(response) {
-    for (var i in response) {
-      $.ajax({
-        url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
-        type: "DELETE",
-        async: false
-      });
-    }
-  });
-}
+// function clearServerThruAJAX() {
+//   $.get("http://thiman.me:1337/menu/sunny", function(response) {
+//     for (var i in response) {
+//       $.ajax({
+//         url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
+//         type: "DELETE",
+//         async: false
+//       });
+//     }
+//   });
+// }

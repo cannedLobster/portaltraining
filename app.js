@@ -4,10 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+//So we have mongoose available everytime we access route
+var mongoose = require('mongoose');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
+mongoose.connect('mongodb://localhost/onlinefood');
 var app = express();
 
 // view engine setup
@@ -22,8 +22,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var index = require('./routes/index');
+var menu = require('./routes/menu');
+var cart = require('./routes/cart');
+var user = require('./routes/user');
+
 app.use('/', index);
-app.use('/users', users);
+app.use('/menu', menu);
+app.use('/cart', cart);
+app.use('/user', user)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -42,5 +49,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
