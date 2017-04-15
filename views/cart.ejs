@@ -1,7 +1,7 @@
 <%- include('header', {title: 'Cart'}) %>
 
     <div class="cart">
-        <h2>Shopping Cart</h2>
+        <h2><%- title %></h2>
         <table>
             <thead>
                 <tr>
@@ -30,7 +30,7 @@
             </tr>
         </table>
         <div class="text-right">
-            <a href="./checkout.html">
+            <a href="/checkoutpage">
                 <button id="checkout-btn">Checkout</button>
             </a>
         </div>

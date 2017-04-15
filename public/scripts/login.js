@@ -15,8 +15,8 @@ $('#register-form').on('submit', function(event) {
      email: emailaddr,
      pass: password
    }, function(response) {
-     document.location.href = './index.html';
      console.log(response);
+     document.location.href = '/';
    });
  }
 });

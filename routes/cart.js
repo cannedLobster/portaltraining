@@ -4,7 +4,6 @@ var CartModel = require('../models/cart'); //.js is implied
 var router = express.Router();
 
 
-
 router.post('/', function(req, res) {
   var body = req.body;
   var newCart = new CartModel(body); // or you can use { name: body.name...

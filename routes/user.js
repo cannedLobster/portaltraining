@@ -28,7 +28,6 @@ router.post('/', function(req, res) {
 /*Post for login*/
 router.post('/login/', function(req, res) {
   var body = req.body;
-  var hashedpassword = passwordHash.generate(body.pass);
   UserModel.findOne({
     user: body.user.trim()
   }, function(err, doc) {
@@ -36,9 +35,7 @@ router.post('/login/', function(req, res) {
       console.log(err);
       res.send(err);
     } else {
-      console.log(hashedpassword);
-      console.log(doc.pass);
-      if (hashedpassword == doc.pass){
+      if (passwordHash.verify(body.pass, doc.pass)){
         res.json(doc);
       }
       else {

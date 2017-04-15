@@ -26,8 +26,14 @@ var index = require('./routes/index');
 var menu = require('./routes/menu');
 var cart = require('./routes/cart');
 var user = require('./routes/user');
+var cartpage = require('./routes/cartpage');
+var loginpage = require('./routes/loginpage');
+var checkoutpage = require('./routes/checkoutpage');
 
 app.use('/', index);
+app.use('/cartpage', cartpage);
+app.use('/loginpage', loginpage);
+app.use('/checkoutpage', checkoutpage);
 app.use('/menu', menu);
 app.use('/cart', cart);
 app.use('/user', user)
