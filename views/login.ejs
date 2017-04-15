@@ -1,0 +1,24 @@
+<%- include('header', {title: 'Login and Registration'}) %>
+
+<div class="login-reg">
+    <h2>Account Login</h2>
+    <input type='checkbox' id='form-switch'>
+    <form id='login-form'>
+        <input type="text" placeholder="Username" id="log-name" required>
+        <input type="password" placeholder="Password" id='log-pass' required>
+        <button type='submit'>Login</button>
+        <label for='form-switch' id='login-submit'><span>Not registered? Register here.</span></label>
+    </form>
+    <form id='register-form'>
+        <input type="text" placeholder="Full Name" id='reg-name' required>
+        <input type="text" placeholder="Username" id='reg-user' required>
+        <input type="email" placeholder="Email" id='reg-email' required>
+        <input type="password" placeholder="Password" id='reg-pass' required>
+        <input type="password" placeholder="Re Password" id='reg-repass' required>
+        <button type='submit' id='register-submit'>Register</button>
+        <label for='form-switch'>Already registered? Login here.</label>
+    </form>
+</div>
+<script src="./scripts/login.js"></script>
+
+<%- include('footer') %>

@@ -16,6 +16,7 @@ $('#register-form').on('submit', function(event) {
      pass: password
    }, function(response) {
      document.location.href = './index.html';
+     console.log(response);
    });
  }
 });
@@ -23,10 +24,11 @@ $('#register-form').on('submit', function(event) {
 $('#login-form').on('submit', function(event) {
   var username = $('#log-name').val();
   var password = $('#log-pass').val();
-  $.get('http//localhost:3000/user', {
-    user: username, pass: password
+  $.post('http://localhost:3000/user/login/', {
+    user: username,
+    pass: password
   }, function(response) {
-
+      console.log(response);
   });
 });
 
