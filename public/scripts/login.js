@@ -1,35 +1,56 @@
 //Registration submit
 $('#register-form').on('submit', function(event) {
+  event.preventDefault();
   if ($('#reg-pass').val() != $('#reg-repass').val()) {
     event.preventDefault();
-   alert('Different password inputted in fields!');
+    alert('Different passwords inputted in fields!');
  }
  else {
-   var fullname = $('#reg-name').val();
-   var username = $('#reg-user').val();
-   var emailaddr = $('#reg-email').val();
-   var password = $('#reg-pass').val();
-   $.post('http://localhost:3000/user', {
-     name: fullname,
-     user: username,
-     email: emailaddr,
-     pass: password
-   }, function(response) {
-     console.log(response);
-     document.location.href = '/';
+   $.ajax({
+     type: 'POST',
+     url: 'http://localhost:3000/user',
+     data: {
+       name: $('#reg-name').val(),
+       user: $('#reg-user').val(),
+       email: $('#reg-email').val(),
+       pass: $('#reg-pass').val()
+     },
+     success: function(response) {
+       if (!response.length) {
+         alert('User already exists. Please try again.');
+       } else {
+         document.location.href = '/';
+       }
+     }
    });
  }
 });
-
+// Login submit
 $('#login-form').on('submit', function(event) {
-  var username = $('#log-name').val();
-  var password = $('#log-pass').val();
-  $.post('http://localhost:3000/user/login/', {
-    user: username,
-    pass: password
-  }, function(response) {
-      console.log(response);
+  event.preventDefault();
+  $.ajax({
+    type: 'POST',
+    url: 'http://localhost:3000/user/login',
+    data: {
+      user: $('#log-user').val(),
+      pass: $('#log-pass').val()
+    },
+    success: function(response) {document.location.href = '/';},
+    statusCode: {401: function() {alert('Invalid Login.');}}
   });
 });
 
+//Update cart header
+var cartBtn = document.querySelector('#cart-btn');
+var totalamt = document.querySelector("#total-cost");
+var totalCount = 0;
+var totalCost = 0;
+$.get("http://localhost:3000/cart", function(response) {
+  for (var i in response) {
+    totalCount += response[i].qty;
+    totalCost += (response[i].qty * response[i].price)
+  }
+  cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
+  totalamt.innerHTML = "$" + totalCost;
+});
 //Helper Functions

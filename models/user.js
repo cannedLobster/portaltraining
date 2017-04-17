@@ -13,6 +13,16 @@ schema.methods.toJSON = function() {
   delete obj.pass;
   return obj;
 };
+schema.statics.removePass = function(user) {
+  var obj = user.toObject();
+  delete obj.pass;
+  return obj;
+}
+schema.statics.hashPassword = function(password) {
+  var temp = passwordHash.generate(password);
+  console.log(temp);
+  return temp;
+}
 //shema.statics.hashPassword add pass automatically in obj UserModel.hashPassword(body.pass),
 
 

@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('client-sessions');
 //So we have mongoose available everytime we access route
 var mongoose = require('mongoose');
 
@@ -22,6 +23,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  cookieName: 'session',
+  secret: 'EvUTZyalL530',
+  duration: 30*60*1000, // How long session is allowed to stay
+  activeDuraction: 5*60*1000 // Increase duration for session when user is active
+}));
+
 var index = require('./routes/index');
 var menu = require('./routes/menu');
 var cart = require('./routes/cart');
@@ -30,7 +38,9 @@ var cartpage = require('./routes/cartpage');
 var loginpage = require('./routes/loginpage');
 var checkoutpage = require('./routes/checkoutpage');
 
+
 app.use('/', index);
+app.use('/logout', index);
 app.use('/cartpage', cartpage);
 app.use('/loginpage', loginpage);
 app.use('/checkoutpage', checkoutpage);

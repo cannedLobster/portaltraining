@@ -1,10 +1,10 @@
-<%- include('header', {title: 'Login and Registration'}) %>
+<%- include('header', {title: 'Login and Registration', user_welc: user}) %>
 
 <div class="login-reg">
     <h2><%- title %></h2>
     <input type='checkbox' id='form-switch'>
     <form id='login-form'>
-        <input type="text" placeholder="Username" id="log-name" required>
+        <input type="text" placeholder="Username" id="log-user" required>
         <input type="password" placeholder="Password" id='log-pass' required>
         <button type='submit'>Login</button>
         <label for='form-switch' id='login-submit'><span>Not registered? Register here.</span></label>
