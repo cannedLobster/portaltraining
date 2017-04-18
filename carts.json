@@ -1,0 +1,66 @@
+{ 
+    "_id" : ObjectId("58f5513c64018a1f14a5643a"), 
+    "user" : "henry", 
+    "email" : "d@d", 
+    "cart" : [
+        {
+            "_id" : ObjectId("58f5513c64018a1f14a5643b")
+        }
+    ], 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f55194dc978737145be128"), 
+    "user" : "ben", 
+    "email" : "e@e", 
+    "cart" : [
+        {
+            "_id" : ObjectId("58f55194dc978737145be129")
+        }
+    ], 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f552bcc0aa3837f04e9c91"), 
+    "user" : "frank", 
+    "email" : "h@h", 
+    "cart" : [
+        {
+            "_id" : ObjectId("58f552bcc0aa3837f04e9c92")
+        }
+    ], 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f55305f174ba3a60585f30"), 
+    "user" : "frank", 
+    "email" : "h@h", 
+    "cart" : [
+        {
+            "_id" : ObjectId("58f55305f174ba3a60585f31")
+        }
+    ], 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f553fd2966690a4c1f2faa"), 
+    "user" : "teddy", 
+    "email" : "as@as", 
+    "cart" : [
+        {
+            "_id" : ObjectId("58f553fe2966690a4c1f2fab")
+        }
+    ], 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f554c8bd1e1c07c8e0c884"), 
+    "user" : "teddy", 
+    "email" : "as@as", 
+    "cart" : [
+        {
+            "_id" : ObjectId("58f554c8bd1e1c07c8e0c885")
+        }
+    ], 
+    "__v" : NumberInt(0)
+}

@@ -1,0 +1,64 @@
+{ 
+    "_id" : ObjectId("58f54e85d7afcc1968dae6a5"), 
+    "user" : "sun", 
+    "email" : "a@a", 
+    "pass" : "sha1$808edd72$1$f83fb1daf1b92651d4f254efc6c9c4aaacae9104", 
+    "name" : "Sunny Xu", 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f54f7dd7afcc1968dae6a6"), 
+    "user" : "john", 
+    "email" : "b@b", 
+    "pass" : "sha1$8fd57b36$1$f32ae3172567925710e4fb115886f23689628e45", 
+    "name" : "John Smith", 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f550a279fdad16d075f0e9"), 
+    "user" : "gary", 
+    "email" : "c@c", 
+    "pass" : "sha1$2e851330$1$c1ddc83857e83c9d40e5856de7bb96d1eb013337", 
+    "name" : "Gary P", 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f5513c64018a1f14a56439"), 
+    "user" : "henry", 
+    "email" : "d@d", 
+    "pass" : "sha1$044828a3$1$72ecfc0b9a595a5c111e1c0ad491d931b9c91fb4", 
+    "name" : "Henry Kiss", 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f55194dc978737145be127"), 
+    "user" : "ben", 
+    "email" : "e@e", 
+    "pass" : "sha1$a7682510$1$0e48938af8811e41bf8fefafa391fdb82b353b15", 
+    "name" : "Ben Stiller", 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f552979c9c4c0d00b17635"), 
+    "user" : "ryan", 
+    "email" : "f@f", 
+    "pass" : "sha1$b19f128a$1$f4db4d141c40d4dfbfd1f08ac35986bf1875bb8c", 
+    "name" : "Ryan Kim", 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f552bbc0aa3837f04e9c90"), 
+    "user" : "frank", 
+    "email" : "h@h", 
+    "pass" : "sha1$22066597$1$a415bc487c865c3dc61725c3db9016ca3d7cd33f", 
+    "name" : "Frank Pillo", 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f55373d41d24208085f8c7"), 
+    "user" : "teddy", 
+    "email" : "as@as", 
+    "pass" : "sha1$bb156ce4$1$7acebe57a88274c07dd41a72b9eea24b8b137c07", 
+    "name" : "TEddy Rose", 
+    "__v" : NumberInt(0)
+}

@@ -7,15 +7,8 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res) {
   if (req.session && req.session.user) {
-    UserModel.findOne({email: req.session.user.email}, function(err, user) {
-      if (!user) {
-        req.session.reset();
-        res.redirect('/loginpage');
-      } else {
-        res.locals.user = user; // ?
-        res.render('index', {title: "MENU", user: "Welcome, " + req.session.user.name + "  "});
-      }
-    })
+    res.render('index', {title: "MENU", user: "Welcome, " + req.session.user.name});
+
   } else {
     res.render('index', {title: "MENU", user: ""});
   }

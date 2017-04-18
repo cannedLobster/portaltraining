@@ -1,0 +1,54 @@
+{ 
+    "_id" : ObjectId("58efed8fcb039c2898b4d120"), 
+    "name" : "Fries", 
+    "price" : NumberInt(2), 
+    "desc" : "Quality fresh potatos served to order! Lightly seasoned with salt.", 
+    "img" : "../images/fries.jpg", 
+    "menu_id" : NumberInt(0), 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f07d518962172274e9ae73"), 
+    "name" : "Drink", 
+    "price" : NumberInt(1), 
+    "desc" : "Cool drink of your choice. Best on a hot day!", 
+    "img" : "../images/drink.jpg", 
+    "menu_id" : NumberInt(1), 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f0bc0aa78e1e27b4a16a18"), 
+    "name" : "Plain Burger", 
+    "desc" : "The plain burger. Simple satisfaction guaranteed.", 
+    "price" : NumberInt(4), 
+    "menu_id" : NumberInt(2), 
+    "__v" : NumberInt(0), 
+    "img" : "../images/plainburger.jpg"
+}
+{ 
+    "_id" : ObjectId("58f0cad7229b8520444913a3"), 
+    "name" : "Chicken Burger", 
+    "price" : NumberInt(5), 
+    "desc" : "Made from the free range chickens from Arkansas. Absolutely astounding taste.", 
+    "img" : "../images/chickenburger.jpg", 
+    "menu_id" : NumberInt(3), 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f0cb0a229b8520444913a4"), 
+    "name" : "Quarter-Pounder with Cheese", 
+    "price" : NumberInt(6), 
+    "desc" : "The most famous cheeseburger made with the best beef and the freshest cheese available just for you.", 
+    "img" : "../images/cheeseburger.jpg", 
+    "menu_id" : NumberInt(4), 
+    "__v" : NumberInt(0)
+}
+{ 
+    "_id" : ObjectId("58f0cb3d229b8520444913a5"), 
+    "name" : "Royale with Cheese", 
+    "price" : NumberInt(7), 
+    "desc" : "The more \"premium\" french version of the quarter-pounder with cheese.", 
+    "img" : "../images/cheeseburger.jpg", 
+    "menu_id" : NumberInt(5), 
+    "__v" : NumberInt(0)
+}
