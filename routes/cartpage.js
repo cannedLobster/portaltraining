@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
         res.redirect('/loginpage');
       } else {
         res.locals.user = user;
-        res.render('cart', {title: "CART", user: "Welcome, " + req.session.user.name + "  "});
+        res.render('cart', {title: "CART", user: "Welcome, " + req.session.user.name});
       }
     })
   } else {

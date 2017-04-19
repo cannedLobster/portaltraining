@@ -16,7 +16,7 @@ $('#register-form').on('submit', function(event) {
        pass: $('#reg-pass').val()
      },
      success: function(response) {
-       if (!response.length) {
+       if (!response) {
          alert('User already exists. Please try again.');
        } else {
          document.location.href = '/';

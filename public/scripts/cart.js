@@ -1,91 +1,70 @@
-/*Inputting "Server" sent cart items*/
-// clearServerThruAJAX();
-var cart_arr = [];
-$.get("http://localhost:3000/cart", function(response) {
-  for (var i in response) {
-    cart_arr.push(response[i]);
-  }
-  generateCart(cart_arr);
-  updateCosts();
-});
-//Update Costs
-$(".cart table").on("change", "tr td input.cart-quantity", function(event) {
-    var newQty = parseInt(this.value);
-    var total = parseInt(this.value)
-      * retrievePrice(this.parentElement.parentElement.querySelector("tr td p.cart-price").innerHTML);
-    this.parentElement.parentElement.querySelector("p.item-total").innerHTML = "$"+total;
-    var item_id = this.id.slice(2);
-    $.get("http://localhost:3000/cart/" + item_id, function(response) {
-      console.log(response);
-      console.log(response[0]);
-      totalCount += newQty - response[0].qty;
-      totalCost += (newQty-response[0].qty) * response[0].price;
-      $.ajax({
-        url: "http://localhost:3000/cart/" + item_id,
-        data: {
-          qty: newQty
-        },
-        type: "PATCH"
-      });
-      cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
-      totalamt.innerHTML = "$" + totalCost;
-    });
-    updateCosts();
-});
-//Update removal
-$(".cart table").on("click", "tr td button.cart-remove-btn", function(event) {
-    var name = this.parentElement.querySelector("h3.item-name").innerHTML;
-    var index = getCartIndex(name);
-    cart_arr[index].quantity = 0;
-    var item = $(this).parent().parent();
-    item.next().remove(); //Remove line
-    item.remove();
-    var item_id = this.id.slice(2);
-    $.ajax({
-      url: "http://localhost:3000/cart/" + item_id,
-      data: {
-        qty: 0
-      },
-      type: "PATCH"
-    });
-    //update cart header
-    totalCount -= this.parentElement.parentElement
-      .querySelector("td input.cart-quantity").value;
-    totalCost -= retrievePrice(this.parentElement
-      .querySelector("p.cart-price").innerHTML)
-       * this.parentElement.parentElement
-         .querySelector("td input.cart-quantity").value;
-    cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
-    totalamt.innerHTML = "$" + totalCost;
-    updateCosts();
-});
-
 //Update cart header
 var cartBtn = document.querySelector('#cart-btn');
 var totalamt = document.querySelector("#total-cost");
 var totalCount = 0;
 var totalCost = 0;
+/*Inputting "Server" sent cart items*/
+var cart = {
+    items: []
+};
+var cartItemMap = {};
 $.get("http://localhost:3000/cart", function(response) {
-  for (var i in response) {
-    totalCount += response[i].qty;
-    totalCost += (response[i].qty * response[i].price)
-  }
-  cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
-  totalamt.innerHTML = "$" + totalCost;
+    console.log(response);
+    totalCount = response.totalQty;
+    totalCost = response.totalCost;
+    cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
+    totalamt.innerHTML = "$" + totalCost;
+    // Populate local cart
+    cart = response;
+    for (var i = 0; i < cart.items.length; i++) {
+        cartItemMap[cart.items[i].item._id] = i;
+    }
+    generateCart(cart.items);
+    updateCosts();
 });
-
+//Update Costs
+$(".cart table").on("change", "tr td input.cart-quantity", function(event) {
+    var item_id = this.id.slice(2);
+    var index = cartItemMap[item_id];
+    cart.items[index].qty = parseInt(this.value);
+    var item_total = cart.items[index].qty * cart.items[index].item.price;
+    var body = {
+        items: cart.items
+    };
+    var itemtotal_element = this.parentElement.parentElement.querySelector("p.item-total");
+    $.post('http://localhost:3000/cart', body, function(response) {
+        totalCount = response.totalQty;
+        totalCost = response.totalCost;
+        cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
+        totalamt.innerHTML = "$" + totalCost;
+        updateCosts();
+        itemtotal_element.innerHTML = "$" + item_total;
+    });
+});
+//Update removal
+$(".cart table").on("click", "tr td button.cart-remove-btn", function(event) {
+  var item_id = this.id.slice(2);
+  var index = cartItemMap[item_id];
+  cart.items[index].qty = 0;
+  var body = {
+      items: cart.items
+  };
+  $.post('http://localhost:3000/cart', body, function(response) {
+      document.location.href = '/cartpage';
+  });
+});
 
 
 //Helper Functions
 function generateCart(arr) {
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i].qty != 0)
-      $("body div.cart table tr.endofcart").before(createCartElement(arr[i]));
-  }
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i].qty != 0)
+            $("body div.cart table tr.endofcart").before(createCartElement(arr[i].item, arr[i].qty));
+    }
 }
-function createCartElement(item) {
-  var total = parseInt(item.price) * parseInt(item.qty);
-  var item_element = `
+function createCartElement(item, qty) {
+    var total = parseInt(item.price) * parseInt(qty);
+    var item_element = `
   <tr>
     <td>
       <a href="./index.html"><h3 class="item-name">${item.name}</h3></a>
@@ -93,7 +72,7 @@ function createCartElement(item) {
         <button class="cart-remove-btn" id="r-${item._id}">REMOVE</button>
     </td>
     <td>
-      <input type='number' id="c-${item._id}" value='${item.qty}' class="cart-quantity" min="1" max="1000">
+      <input type='number' id="c-${item._id}" value='${qty}' class="cart-quantity" min="1" max="1000">
     </td>
     <td>
       <p class="item-total">\$${total}</p>
@@ -102,51 +81,14 @@ function createCartElement(item) {
   <tr>
     <td colspan="3"><hr></td>
   </tr>`;
-  return item_element;
-}
-function getCartIndex(name) {
-  for (var i = 0; i < cart_arr.length; i++) {
-    if (cart_arr[i].name == name)
-      return i;
-  }
-  return NaN;
-}
-function addLine() {
-  var row = document.createElement('tr');
-  table_ele.insertBefore(row,table_ele.firstChild);
-  var data = document.createElement('td');
-  data.colSpan = "3";
-  row.appendChild(data);
-  var line = document.createElement('hr');
-  data.appendChild(line);
-}
-function addtablerow(){
-  var row = document.createElement('tr');
-  table_ele.insertBefore(row, table_ele.firstChild);
-  return row;
-}
-function addClass(base, elename, classname) {
-    var ele = document.createElement(elename);
-    ele.className = classname;
-    base.appendChild(ele);
-    return ele;
-}
-function retrievePrice(s) {
-    var p = s.substring(1, s.length);
-    return parseInt(p);
+    return item_element;
 }
 function updateCosts() {
-  var subtot_amt = 0;
-  var salestax = 1;
-  var total = 0;
-  document.querySelectorAll(".item-total").forEach(
-    function(obj) {
-      subtot_amt += retrievePrice(obj.innerHTML);
-    }
-  );
-  document.querySelector("#cart-subtotal").innerHTML = "$" + subtot_amt;
-  total = subtot_amt + salestax;
-  document.querySelector("#cart-total").innerHTML = "$" + total;
+    var subtot_amt = cart.totalCost;
+    var salestax = 1;
+    var total = subtot_amt + salestax;
+    document.querySelector("#cart-subtotal").innerHTML = "$" + subtot_amt;
+    document.querySelector("#cart-total").innerHTML = "$" + total;
 }
 // function clearServerThruAJAX() {
 //   $.get("http://thiman.me:1337/menu/sunny", function(response) {
@@ -191,4 +133,39 @@ function updateCosts() {
 //         var tot = addClass(data3, "p", "item-total");
 //         tot.innerHTML = "$" + cart_arr[i].price*cart_arr[i].quantity;
 //     }
+// }
+// function getCartIndex(name) {
+//     for (var i = 0; i < cart_arr.length; i++) {
+//         if (cart_arr[i].name == name)
+//             return i;
+//     }
+//     return NaN;
+// }
+//
+// function addLine() {
+//     var row = document.createElement('tr');
+//     table_ele.insertBefore(row, table_ele.firstChild);
+//     var data = document.createElement('td');
+//     data.colSpan = "3";
+//     row.appendChild(data);
+//     var line = document.createElement('hr');
+//     data.appendChild(line);
+// }
+//
+// function addtablerow() {
+//     var row = document.createElement('tr');
+//     table_ele.insertBefore(row, table_ele.firstChild);
+//     return row;
+// }
+//
+// function addClass(base, elename, classname) {
+//     var ele = document.createElement(elename);
+//     ele.className = classname;
+//     base.appendChild(ele);
+//     return ele;
+// }
+//
+// function retrievePrice(s) {
+//     var p = s.substring(1, s.length);
+//     return parseInt(p);
 // }

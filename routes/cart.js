@@ -5,75 +5,48 @@ var router = express.Router();
 
 
 router.post('/', function(req, res) {
-  var body = req.body;
-  var newCart = new CartModel(body); // or you can use { name: body.name...
-    //error and documentation
-  newCart.save(function(err, doc) {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.json(doc);
+    var body = req.body;
+    var items = body.items; //update items
+    var userId = req.session.user._id;
+    var cartBody = {
+        userId,
+        items,
+        totalCost: CartModel.findTotalCost(items),
+        totalQty: CartModel.findTotalQty(items)
     }
-  });
-});
+    CartModel
+        .findOneAndUpdate({
+            userId
+        }, cartBody, {
+            upsert: true,
+            new: true
+        })
+        .then(function(updatedCart) {
+            res.json(updatedCart);
+        })
+        .catch(function(err) {
+            res.send(err);
+        });
+}); // Insert updated cart items w/ qty
+//RETURN ENTIRE CART
 router.get('/', function(req, res) {
-  //TODO: gets all menu Items
-  CartModel.find({}, function(err, docs) {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.json(docs);
-    }
-  });
-  //res.send("alternative plain text response");
-});
-router.get('/:id', function(req, res) {
-    CartModel.find({'_id': req.params.id}, function(err, doc) {
-      if (err) {
-        console.log(err);
-        res.send(err);
-      } else {
-        res.json(doc);
-      }
+    CartModel.findOne({
+        userId: req.session.user._id
+    }, function(err, cart) {
+        if (err) {
+            res.send(err);
+        } else {
+            if (!cart) {
+                res.json({
+                    items: [],
+                    totalCost: 0,
+                    totalQty: 0
+                });
+            } else {
+                res.json(cart);
+            }
+        }
     });
-});
-router.patch('/:id', function(req, res) {
-  CartModel.updateOne({"_id": req.params.id}, {
-    $set: req.body
-  }, function(err, doc) {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.json(doc);
-    }
-  });
-});
-//Increment patch
-router.patch('/:id/inc', function(req, res) {
-  CartModel.updateOne({"_id": req.params.id}, {
-    $inc: {qty: 1}
-  }, function(err, doc) {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      res.json(doc);
-    }
-  });
-});
-router.delete('/:id', function(req, res) {
-  var cartID = req.params.id;
-  CartModel.deleteOne({"_id": cartID}, function(err, doc){
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else  {
-      res.json(doc);
-    }
-  });
 });
 
 module.exports = router;

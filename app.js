@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var session = require('client-sessions');
 //So we have mongoose available everytime we access route
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 mongoose.connect('mongodb://localhost/onlinefood');
 var app = express();
@@ -19,7 +20,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true })); //changed for cart to prevent obj from turning into a string
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
