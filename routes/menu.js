@@ -31,6 +31,17 @@ router.get('/', function(req, res) {
   })
   //res.send("alternative plain text response");
 });
+router.delete('/:id', function(req, res) {
+  var menuID = req.params.id;
+  MenuModel.deleteOne({"_id": menuID}, function(err, doc){
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else  {
+      res.json(doc);
+    }
+  });
+});
 
 router.patch('/:id', function(req, res){
   var menuID = req.params.id;
@@ -46,17 +57,6 @@ router.patch('/:id', function(req, res){
   });
 });
 
-router.delete('/:id', function(req, res) {
-  var menuID = req.params.id;
-  MenuModel.deleteOne({"_id": menuID}, function(err, doc){
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else  {
-      res.json(doc);
-    }
-  });
-});
 
 
 module.exports = router;

@@ -64,10 +64,8 @@ router.get('/', function(req, res) {
     });
   }
 });
-router.delete('/:id', function(req, res) {
-  var cartUserID = req.params.id;
-  CartModel.deleteOne({userId: cartUserID}, function(err, doc) {
-    console.log(doc);
+router.delete('/', function(req, res) {
+  CartModel.deleteMany({}, function(err, doc) {
     if (err) {
       res.send(err);
     } else {

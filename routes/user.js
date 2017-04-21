@@ -58,5 +58,16 @@ router.post('/login', function(req, res) {
     }
   });
 });
+/*Delete*/
+router.delete('/', function(req, res) {
+  var user = req.params.user;
+  UserModel.deleteMany({}, function(err, doc) {
+    if(err){
+      res.send(err);
+    } else {
+      res.send({success: true});
+    }
+  });
+});
 
 module.exports = router;
