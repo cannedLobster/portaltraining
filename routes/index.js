@@ -19,7 +19,6 @@ router.get('/', function(req, res) {
       name: 'Guest',
       guest: true
     };
-    console.log(req.session.user);
     res.render('index', {title: "MENU", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
   }
 });

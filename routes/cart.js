@@ -72,6 +72,16 @@ router.delete('/', function(req, res) {
       res.json({success: true});
     }
   });
+});
+router.delete('/:id', function(req, res) {
+ var cartUserID = req.params.id;
+ CartModel.deleteOne({userId: cartUserID}, function(err, doc) {
+  if (err) {
+     res.send(err);
+   } else {
+     res.json({success: true});
+   }
+ });
 });;
 
 module.exports = router;

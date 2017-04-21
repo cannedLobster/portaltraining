@@ -9,7 +9,6 @@ var cart = {
 };
 var cartItemMap = {};
 $.get("http://localhost:3000/cart", function(response) {
-    console.log(response);
     totalCount = response.totalQty;
     totalCost = response.totalCost;
     cartBtn.innerHTML = "Cart(" + totalCount + " Items)";

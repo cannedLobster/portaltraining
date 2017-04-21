@@ -30,10 +30,15 @@
             </tr>
         </table>
         <div class="text-right">
-            <a href="/checkoutpage">
-
-                <button id="checkout-btn">Checkout</button>
-            </a>
+          <% if (!guest) {%>
+            <a href='/checkoutpage'>
+            <button id="checkout-btn">Checkout</button>
+          </a>
+          <% } else { %>
+            <a href = '/loginpage'>
+            <button id="checkout-login-btn">Login</button>
+          </a>
+          <% } %>
         </div>
     </div>
 

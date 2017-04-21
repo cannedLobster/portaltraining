@@ -241,11 +241,12 @@ p.item-total {
 .text-right {
   text-align: right;
 }
-#checkout-btn {
+.cart button {
   margin: 10px 10px;
   font-weight: bold;
   padding: .5em;
 }
+
 /*Cart Links*/
 .cart table a {
   text-decoration: none;

@@ -4,6 +4,9 @@ var totalamt = document.querySelector("#total-cost");
 var totalCount = 0;
 var totalCost = 0;
 
+var cart = {
+  items: []
+};
 var cartItemMap = {};
 
 $.get("http://localhost:3000/cart", function(response) {
@@ -12,7 +15,7 @@ $.get("http://localhost:3000/cart", function(response) {
   cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
   totalamt.innerHTML = "$" + totalCost;
   // Populate local cart
-  var cart = response;
+  cart = response;
   for (var i = 0; i < cart.items.length; i++) {
     cartItemMap[cart.items[i].item._id] = i;
   }

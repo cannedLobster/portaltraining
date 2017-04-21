@@ -4,20 +4,18 @@ var UserModel = require('../models/user');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-  if (req.session && req.session.user) { // Should always be true
-    UserModel.findOne({user: req.session.user.user}, function(err, user) {
-      if (!user) {
-        res.render('cart', {title: "LOGIN", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
-      } else {
-        res.render('cart', {title: "LOGIN", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
-      }
-    })
+  if (req.session && req.session.user) {
+    //User session exists
+      res.render('cart', {title: "CART", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
   } else {
+    var guestID = uuid();
     req.session.user = {
-      name: 'Guest Session',
+      guestID,
+      name: 'Guest',
       guest: true
     };
-    res.render('index', {title: "CART", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
+    console.log(req.session.user);
+    res.render('cart', {title: "CART", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
   }
 });
 
