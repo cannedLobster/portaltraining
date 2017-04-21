@@ -1,4 +1,4 @@
-<%- include('header', {title: 'Cart', user_welc: user}) %>
+<%- include('header', {title: 'Cart', usermsg, guest}) %>
 
     <div class="cart">
         <h2><%- title %></h2>
@@ -31,6 +31,7 @@
         </table>
         <div class="text-right">
             <a href="/checkoutpage">
+
                 <button id="checkout-btn">Checkout</button>
             </a>
         </div>

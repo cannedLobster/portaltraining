@@ -17,7 +17,7 @@
         <h1><a href="/" id="logo">HUNGRY BURGERS</a></h1>
         <nav>
             <ul>
-                <% if (!user.length) { %>
+                <% if (guest) { %>
                   <a href="/loginpage" id="login-link">
                       <li>Login/Register</li>
                   </a>
@@ -32,7 +32,7 @@
                 <a href="/cartpage">
                     <li id="cart-btn">Cart(0 Items)</li>
                 </a>
-                <div id="user-welc"><%= user_welc %><span id="total-cost"> $0</span></div>
             </ul>
+            <div id="user-welc"><%= usermsg %><span id="total-cost"> $0</span></div>
         </nav>
     </header>

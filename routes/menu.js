@@ -21,7 +21,6 @@ router.post('/', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-  //TODO: gets all menu Items
   MenuModel.find({}, function(err, docs) {
     if (err) {
       console.log(err);

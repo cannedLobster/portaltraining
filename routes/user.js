@@ -11,7 +11,6 @@ router.post('/', function(req, res) {
     [{email: body.email.trim()},
     {user: body.user.trim()}]}, function (err, doc) {
     if (err) {
-      console.log(err);
       res.send(err);
     } else {
       if (!doc.length) {
@@ -23,16 +22,16 @@ router.post('/', function(req, res) {
         });
         newUser.save(function(err, doc) {
           if (err) {
-            console.log(err);
             res.send(err);
           } else {
+            doc.guest = false;
             req.session.user = UserModel.removePass(doc);
             // SET COOKIE HEADER with User w/o password
-            res.json(doc);
+            res.json({success: true});
           }
         });
       } else {
-        res.json([]);
+        res.json({success: false});
       }
     }
   });
@@ -44,16 +43,18 @@ router.post('/login', function(req, res) {
     user: body.user.trim()
   }, function(err, doc) {
     if (err) {
-      console.log(err);
       res.send(err);
     } else {
       if (!doc) res.status(401).json({error:'Invalid Credentials'});
       else if (passwordHash.verify(body.pass, doc.pass)) {
         req.session.user = UserModel.removePass(doc); // Set CookieHeader
-        res.json(doc);
+        res.json({success: true});
       }
       else //unauthorized Password
-        res.status(401).json({error: 'Invalid credentials'});
+        res.status(401).json({
+          success: false,
+          error: 'Invalid credentials'
+        });
     }
   });
 });

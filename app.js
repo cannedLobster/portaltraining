@@ -9,7 +9,10 @@ var session = require('client-sessions');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost/onlinefood');
+// mongoose.connect('mongodb://localhost/onlinefood');
+var db = process.env.DB || 'onlinefood';
+mongoose.connect(`mongodb://localhost/${db.trim()}`);
+
 var app = express();
 
 // view engine setup

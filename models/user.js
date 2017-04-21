@@ -19,9 +19,7 @@ schema.statics.removePass = function(user) {
   return obj;
 }
 schema.statics.hashPassword = function(password) {
-  var temp = passwordHash.generate(password);
-  console.log(temp);
-  return temp;
+  return passwordHash.generate(password);
 }
 //shema.statics.hashPassword add pass automatically in obj UserModel.hashPassword(body.pass),
 
