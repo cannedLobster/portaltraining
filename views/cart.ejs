@@ -1,0 +1,47 @@
+<%- include('header', {title: 'Cart', usermsg, guest}) %>
+
+    <div class="cart">
+        <h2><%- title %></h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item(s)</th>
+                    <th></th>
+                    <th>Total(s)</th>
+                </tr>
+            </thead>
+            <tr class="endofcart">
+                <th colspan='2' class="totals-label">Subtotal: </th>
+                <td>
+                    <div class="totals-amt" id="cart-subtotal">$0</div>
+                </td>
+            </tr>
+            <tr>
+                <th colspan='2' class="totals-label">Sales Tax: </th>
+                <td>
+                    <div class="totals-amt" id="cart-totaltax">$1</div>
+                </td>
+            </tr>
+            <tr>
+                <tfoot class="bottom">
+                    <th colspan='2' class="full-total">TOTAL:</th>
+                    <td class="full-total" id="cart-total">$0</td>
+                </tfoot>
+            </tr>
+        </table>
+        <div class="text-right">
+          <% if (!guest) {%>
+            <a href='/checkoutpage'>
+            <button id="checkout-btn">Checkout</button>
+          </a>
+          <% } else { %>
+            <a href = '/loginpage'>
+            <button id="checkout-login-btn">Login</button>
+          </a>
+          <% } %>
+        </div>
+    </div>
+
+    <script src="./scripts/cart.js"></script>
+
+    <%- include('footer') %>

@@ -1,0 +1,48 @@
+<%- include('header', {title: "Checkout", usermsg, guest}) %>
+
+<div class="checkout">
+  <div class="information">
+    <h2 class="checkout-title"><%- title %></h2>
+    <input type="checkbox" id="delivery-switch">
+    <label for="delivery-switch">Pick up or Delivery</label>
+    <form id="pickup-form" action="" method="post">
+      <input id='pickup-phone' type="tel" placeholder="Phone number (xxxx-xxx-xxxx)" pattern="^\d{4}-\d{3}-\d{4}" required><p></p>
+      <button type='submit'>Confirm Order</button>
+    </form>
+    <form id="delivery-form" action="" method="post">
+      <input id='delivery-phone' type="tel" placeholder="Phone number (xxxx-xxx-xxxx)" pattern="^\d{4}-\d{3}-\d{4}" required><p></p>
+      <input id='delivery-addr' type="text" placeholder="Address" required>
+      <p class="payment">Payment Details</p>
+      <input id='delivery-card' type="tel" placeholder="Card Number" required><p></p>
+      <button type='submit'>Confirm Order</button>
+    </form>
+    </form>
+  </div>
+  <div class="order-review">
+    <h3> ORDER REVIEW </h3>
+    <table>
+    <tr>
+      <th colspan='2' class="totals-label">Subtotal: </th>
+      <td><div id="sub-amt">$</div></td>
+    </tr>
+    <tr>
+      <th colspan='2' class="totals-label">Sales Tax: </th>
+      <td><div id="salestax-amt">$</div></td>
+    </tr>
+    <tr>
+      <th colspan='2' class="totals-label">Delivery: </th>
+      <td><div id="delivery-amt">$</div></td>
+    </tr>
+    <tr>
+      <tfoot>
+        <th colspan='2' class="full-total">TOTAL</th>
+        <td><div id="final-totalamt">$</div></td>
+      </tfoot>
+    </tr>
+    </table>
+  </div>
+</div>
+
+<script src="./scripts/checkout.js"></script>
+
+<%- include('footer') %>

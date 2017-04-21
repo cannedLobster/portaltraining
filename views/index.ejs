@@ -1,0 +1,16 @@
+<%- include('header', {title: 'Main Menu', usermsg, guest}) %>
+
+    <div class="menu">
+        <div id="menu_modal" class="modal">
+            <p>Click again to close.</p>
+            <h2 id="modal_title"></h2>
+            <img id="modal_img" src="" />
+            <p id="modal_desc"></p>
+            <p id="modal_price"></p>
+        </div>
+        <h2><%= title %></h2>
+    </div>
+
+  <script src="./scripts/menu.js"></script>
+
+<%- include('footer') %>
