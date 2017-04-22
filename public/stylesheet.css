@@ -360,3 +360,28 @@ p.item-total {
 #form-switch:checked~#login-form {
   display: none;
 }
+/*-------------------RECEIPT.HTML-------------------*/
+/*--------------------------------------------------*/
+.receipt {
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 90%;
+  border: 3px solid black;
+  padding: 5px;
+  background-color: white;
+  text-align: center;
+}
+.receipt h3{
+  border-bottom: 1px solid black;
+}
+.receipt-buyer p{
+  line-height: 4px;
+  font-size: 1.2em;
+}
+.receipt-items p{
+  line-height: 4px;
+}
+.receipt-totals p{
+  font-size: 1.5em;
+}

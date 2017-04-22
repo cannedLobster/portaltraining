@@ -34,7 +34,12 @@ $('#pickup-form').on('submit', function(event) {
     data: {
       cart,
       phone: $('#pickup-phone').val(),
-      delivery: false
+      delivery: false,
+      cost: {
+        delivery: deliveryFee,
+        tax: salestax,
+        final: parseInt(totalCost + salestax + deliveryFee)
+      }
     },
     success: function(response) {
       cartId = response.userId;
@@ -43,7 +48,7 @@ $('#pickup-form').on('submit', function(event) {
         url: 'http://localhost:3000/cart/' + cartId,
         success: function(res) {
           alert('Order Placed!');
-          document.location.href = '/';
+          document.location.href = '/receiptpage';
         }
       });
     }
@@ -59,10 +64,15 @@ $('#delivery-form').on('submit', function(event) {
     url: 'http://localhost:3000/order',
     data: {
       cart,
-      phone: $('#delvery-phone').val(),
+      phone: $('#delivery-phone').val(),
       delivery: true,
       address: $('#delivery-addr').val(),
-      card: $('#delivery-card').val()
+      card: $('#delivery-card').val(),
+      cost: {
+        delivery: deliveryFee,
+        tax: salestax,
+        final: parseInt(totalCost + salestax + deliveryFee)
+      }
     },
     success: function(response) {
       cartId = response.userId;
@@ -71,7 +81,7 @@ $('#delivery-form').on('submit', function(event) {
         url: 'http://localhost:3000/cart/' + cartId,
         success: function(res) {
           alert('Order Placed!');
-          document.location.href = '/';
+          document.location.href = '/receiptpage';
         }
       });
     }

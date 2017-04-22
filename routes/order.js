@@ -12,12 +12,14 @@ router.post('/', function(req, res) {
     phone: body.phone,
     delivery: body.delivery,
     address: body.delivery ? body.address : '',
-    card: body.delivery ? body.card : ''
+    card: body.delivery ? body.card : '',
+    cost: body.cost
   });
   newOrder.save(function(err, order) {
     if (err) {
       res.send(err);
     } else {
+      req.session.user.orderId = order._id;
       res.json({
         success: true,
         userId: order.cart.userId
@@ -26,11 +28,11 @@ router.post('/', function(req, res) {
   });
 });
 router.get('/', function(req, res) {
-  OrderModel.find({}, function(err, orders) {
+  OrderModel.findOne({_id: req.session.user.orderId}, function(err, doc) {
     if (err) {
       res.send(err);
     } else {
-      res.json(orders);
+      res.json(doc);
     }
   });
 });

@@ -6,7 +6,12 @@ var order = {
   delivery: Boolean,
   phone: String,
   address: String,
-  card: Number
+  card: Number,
+  cost: {
+    delivery: Number,
+    tax: Number,
+    final: Number
+  }
 };
 
 module.exports = mongoose.model('order', order);

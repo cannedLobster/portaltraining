@@ -42,6 +42,7 @@ var order = require('./routes/order');
 var cartpage = require('./routes/cartpage');
 var loginpage = require('./routes/loginpage');
 var checkoutpage = require('./routes/checkoutpage');
+var receiptpage = require('./routes/receiptpage');
 
 
 app.use('/', index);
@@ -49,6 +50,7 @@ app.use('/logout', index);
 app.use('/cartpage', cartpage);
 app.use('/loginpage', loginpage);
 app.use('/checkoutpage', checkoutpage);
+app.use('/receiptpage', receiptpage);
 app.use('/menu', menu);
 app.use('/cart', cart);
 app.use('/user', user)
