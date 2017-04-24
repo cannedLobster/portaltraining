@@ -10,13 +10,7 @@ router.get('/', function(req, res) {
     //User session exists
     res.render('receipt', {title: "RECEIPT", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
   } else {
-    var guestID = uuid();
-    req.session.user = {
-      guestID,
-      name: 'Guest',
-      guest: true
-    };
-    res.render('receipt', {title: "RECEIPT", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
+    res.redirect('/');
   }
 });
 

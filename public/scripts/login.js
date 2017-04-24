@@ -26,35 +26,25 @@ $('#register-form').on('submit', function(event) {
 });
 // Login submit
 $('#login-form').on('submit', function(event) {
-  event.preventDefault();
-  $.get('http://localhost:3000/cart', function(cart) {
-    var guestID = cart.userId;
+    event.preventDefault();
+    console.log('SUBMITTED');
     $.ajax({
-      type: 'POST',
-      url: 'http://localhost:3000/user/login',
-      data: {
-          user: $('#log-user').val(),
-          pass: $('#log-pass').val()
-      },
-      success: function(response) {
-        if (cart.items.length) {
-            $.post('http://localhost:3000/cart',{items: cart.items}, function(updatedCart) {
-              $.ajax({url: 'http://localhost:3000/cart/' + guestID, type: 'DELETE',
-                success: function(deletion) {document.location.href = '/';}});
-            });
-        } else {
+        type: 'POST',
+        url: 'http://localhost:3000/user/login',
+        data: {
+            user: $('#log-user').val(),
+            pass: $('#log-pass').val()
+        },
+        success: function(response) {
             document.location.href = '/';
+            alert('Successful Login!');
+        },
+        statusCode: {
+            401: function() {alert('Invalid Login.');},
+            400: function() {alert('Bad request');}
         }
-      },
-      statusCode: {
-          401: function() {
-              alert('Invalid Login.');
-          }
-      }
     });
-  });
 });
-
 //Update cart header
 //Cart Button Increment w/ event delegation
 var cartBtn = document.querySelector('#cart-btn');

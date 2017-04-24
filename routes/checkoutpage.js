@@ -8,13 +8,7 @@ router.get('/', function(req, res) {
     //User session exists
       res.render('checkout', {title: "CHECKOUT", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
   } else {
-    var guestID = uuid();
-    req.session.user = {
-      guestID,
-      name: 'Guest',
-      guest: true
-    };
-    res.render('index', {title: "MENU", usermsg: "Welcome, " + req.session.user.name, guest: req.session.user.guest});
+    res.redirect('/');
   }
 });
 

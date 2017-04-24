@@ -36,6 +36,7 @@ $(".cart table").on("change", "tr td input.cart-quantity", function(event) {
         totalCost = response.totalCost;
         cartBtn.innerHTML = "Cart(" + totalCount + " Items)";
         totalamt.innerHTML = "$" + totalCost;
+        cart = response;
         updateCosts();
         itemtotal_element.innerHTML = "$" + item_total;
     });

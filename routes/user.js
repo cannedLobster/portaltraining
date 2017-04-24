@@ -52,7 +52,7 @@ router.post('/', function(req, res) {
       }
     })
     .then(function(updatedCart) {
-      return CartModel.deleteOne({userId: guestId})
+      return CartModel.deleteOne({userId: guestId});
     })
     .then(function(deletedCart) {
       res.json({success: true});
@@ -61,30 +61,51 @@ router.post('/', function(req, res) {
       res.send(err);
     });
   } else {
-    res.json({success: false});
+    res.status(400).json({error:'Invalid Session'});
   }
 });
 /*Post for login*/
 router.post('/login', function(req, res) {
   var body = req.body;
-  UserModel.findOne({
-    user: body.user.trim()
-  }, function(err, doc) {
-    if (err) {
+  if (req.session.user.guest) {
+    var guestId = req.session.user.guestID;
+    var items;
+    CartModel.findOne({userId: guestId})
+    .then(function(cart) {
+      items = cart ? cart.items : null;
+      return UserModel.findOne({
+        user: body.user.trim()
+      });
+    })
+    .then(function(user) {
+      if(!user) res.status(401).json({error:'Invalid Credentials'});
+      else if (passwordHash.verify(body.pass, user.pass)) {
+        req.session.user = UserModel.removePass(user);
+        userId = req.session.user._id;
+        if (items) { // update user cart with guest cart
+          var cartBody = {
+            userId,
+            items,
+            totalCost: CartModel.findTotalCost(items),
+            totalQty: CartModel.findTotalQty(items)
+          };
+          return CartModel.findOneAndUpdate({userId},cartBody,{
+            upsert: true,
+            new: true
+          });
+        } else res.json({success:true});
+      } else res.status(401).json({error: 'Invalid credentials'});
+    })
+    .then(function(updatedCart) {
+      return CartModel.deleteOne({userId: guestId});
+    })
+    .then(function(deletedCart) {
+      res.json({success: true});
+    })
+    .catch(function(err) {
       res.send(err);
-    } else {
-      if (!doc) res.status(401).json({error:'Invalid Credentials'});
-      else if (passwordHash.verify(body.pass, doc.pass)) {
-        req.session.user = UserModel.removePass(doc); // Set CookieHeader
-        res.json({success: true});
-      }
-      else //unauthorized Password
-        res.status(401).json({
-          success: false,
-          error: 'Invalid credentials'
-        });
-    }
-  });
+    });
+  } else res.status(400).json({error:'Invalid Session'});
 });
 /*Delete*/
 router.delete('/', function(req, res) {

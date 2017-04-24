@@ -70,49 +70,66 @@ describe("User API", function() {
         pass: testUser.pass
     };
     let testId;
-    before('should register test user', function(done) {
+    before('should initialize guest user by entering website', function(done) {
         agent = request.agent();
         agent
-            .post(`http://localhost:${port}/user`)
-            .send(testUser)
-            .then(function(res) {
-                assert.isOk(res.body.success);
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+          .get(`http://localhost:${port}/`)
+          .end(function(){done();});
     });
-    it('should logout and login registered test user', function(done) {
-        agent
-            .get(`http://localhost:${port}/logout`);
-        agent
-            .post(`http://localhost:${port}/user/login`)
-            .send(testLogin)
-            .end(function(err, res) {
-                assert.isNotOk(err, "Error check");
-                assert.equal(res.statusCode, 200, 'Status code 200');
-                assert.equal(res.type, 'application/json', 'Content type JSON');
-                //Check data
-                assert.isOk(res.body.success);
-                done();
-            });
+    it('should register test user', function(done) {
+      agent
+          .post(`http://localhost:${port}/user`)
+          .send(testUser)
+          .then(function(res) {
+              assert.isOk(res.body.success);
+              done();
+          })
+          .catch(err => {
+              console.log(err);
+          });
     });
-    it('should logout and register with bad form', function(done) {
-        agent
-            .get(`http://localhost:${port}/logout`);
-        testUser.pass = "somethingelse";
-        agent
-            .post(`http://localhost:${port}/user`)
-            .send(testUser)
-            .then(function(res) {
-                assert.isNotOk(res.body.success);
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+    it('should login test user', function(done) {
+      request
+        .post(`http://localhost:${port}/login`)
+        .send(testLogin)
+        .end(function(err, res) {
+           assert.isNotOk(err, "Error check");
+           assert.equal(res.statusCode, 200, 'Status code 200');
+           assert.equal(res.type, 'application/json', 'Content type JSON');
+           //Check data
+           assert.isOk(res.body.success);
+           done();
+        });
     });
+    // agent
+    //     .get(`http://localhost:${port}/logout`)
+    //     .end(function(){done();});
+    // request
+    //     .post(`http://localhost:${port}/user/login`)
+    //     .send(testLogin)
+    //     .end(function(err, res) {
+    //         assert.isNotOk(err, "Error check");
+    //         assert.equal(res.statusCode, 200, 'Status code 200');
+    //         assert.equal(res.type, 'application/json', 'Content type JSON');
+    //         //Check data
+    //         assert.isOk(res.body.success);
+    //         done();
+    //     });
+    // it('should logout and register with bad form', function(done) {
+    //     agent
+    //         .get(`http://localhost:${port}/logout`);
+    //     testUser.pass = "somethingelse";
+    //     agent
+    //         .post(`http://localhost:${port}/user`)
+    //         .send(testUser)
+    //         .then(function(res) {
+    //             assert.isNotOk(res.body.success);
+    //             done();
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // });
     after('should delete all users', function(done) {
         agent
             .delete(`http://localhost:${port}/user`)
@@ -131,6 +148,7 @@ describe("Cart API", function() {
     var testGuestUserID;
     var testUserID;
     let agent2 = null;
+    let agent3 = null;
     let testUser = {
         name: "TESTUSER",
         user: "testusername2",
@@ -205,7 +223,8 @@ describe("Cart API", function() {
             });
     });
     it('should post into a guest cart', function(done) {
-        agent2
+        agent3 = request.agent();
+        agent3
             .get(`http://localhost:${port}/menu`)
             .end(function(err, res) {
                 var body = {
@@ -218,7 +237,7 @@ describe("Cart API", function() {
                         qty: 1
                     });
                 }
-                agent2
+                agent3
                     .post(`http://localhost:${port}/cart`)
                     .send(body)
                     .end(function(err, response) {
