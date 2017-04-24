@@ -12,14 +12,14 @@ var schema = new mongoose.Schema({
 });
 schema.statics.findTotalCost = function(items) {
   var total = 0;
-  for (var i in items) {
+  for (var i = 0; i < items.length; i++) {
     total+= parseInt(items[i].item.price) * items[i].qty;
   }
   return total;
 };
 schema.statics.findTotalQty = function(items) {
   var total = 0;
-  for (var i in items) {
+  for (var i = 0; i < items.length; i++) {
     total += parseInt(items[i].qty);
   }
   return total;

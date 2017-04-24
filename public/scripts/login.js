@@ -4,32 +4,23 @@ $('#register-form').on('submit', function(event) {
     if ($('#reg-pass').val() != $('#reg-repass').val()) {
         alert('Different passwords inputted in fields!');
     } else {
-        $.get('http://localhost:3000/cart', function(cart) {
-            var guestID = cart.userId;
-            $.ajax({
-                type: 'POST',
-                url: 'http://localhost:3000/user',
-                data: {
-                    name: $('#reg-name').val(),
-                    user: $('#reg-user').val(),
-                    email: $('#reg-email').val(),
-                    pass: $('#reg-pass').val()
-                },
-                success: function(response) {
-                    if (!response.success) {
-                        alert('User already exists. Please try again.');
-                    } else {
-                        if (cart.items.length) {
-                            $.post('http://localhost:3000/cart',{items: cart.items}, function(updatedCart) {
-                              $.ajax({url: 'http://localhost:3000/cart/' + guestID, type: 'DELETE',
-                                success: function(deletion) {document.location.href = '/';}});
-                            });
-                        } else {
-                            document.location.href = '/';
-                        }
-                    }
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:3000/user',
+            data: {
+                name: $('#reg-name').val(),
+                user: $('#reg-user').val(),
+                email: $('#reg-email').val(),
+                pass: $('#reg-pass').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('User Account Made!');
+                    document.location.href = '/';
+                } else {
+                    alert('User already exists. Please try again.');
                 }
-            });
+            }
         });
     }
 });
