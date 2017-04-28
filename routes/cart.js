@@ -38,8 +38,7 @@ router.post('/', function(req, res) {
 }); // Insert updated cart items w/ qty
 //RETURN ENTIRE CART
 router.get('/', function(req, res) {
-  if (req.session.user)
-  {
+  if (req.session.user) {
     var userId = req.session.user.guest ? req.session.user.guestID : req.session.user._id;
     CartModel.findOne({userId}, function(err, cart) {
       if (err) {

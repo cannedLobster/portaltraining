@@ -14,48 +14,50 @@ router.post('/', function(req, res) {
     CartModel.findOne({userId: guestId})
     .then(function(cart) {
       items = cart ? cart.items : null;
-      return UserModel.find({$or: [{
-        email: body.email.trim(),
-        user: body.user.trim()
-      }]});
+      return UserModel.find({$or: [
+        {email: body.email.trim()},
+        {user: body.user.trim()}
+      ]});
     })
     .then(function(users) {
       if (!users.length) {
-        var newUser = new UserModel({
+        var newUser2 = new UserModel({
           user: body.user.trim(),
           email: body.email.trim(),
           pass: UserModel.hashPassword(body.pass.trim()),
           name: body.name.trim()
         });
-        return newUser.save(newUser);
+        return newUser2.save(newUser2)
+          .then(function(newUser) {
+            req.session.user = UserModel.removePass(newUser);
+            var userId = req.session.user._id;
+            if (items) {
+              var cartBody = {
+                userId,
+                items,
+                totalCost: CartModel.findTotalCost(items),
+                totalQty: CartModel.findTotalQty(items)
+              };
+              CartModel.findOneAndUpdate({userId},cartBody,{
+                upsert: true,
+                new: true
+              })
+                .then(function(updatedCart) {
+                  return CartModel.deleteOne({userId: guestId});
+                })
+                .then(function(deletedCart) {
+                  res.json({success: true});
+                })
+                .catch(function(err) {
+                  res.error(err);
+                });
+            } else {
+              return res.json({success: true});
+            }
+          });
       } else {
-        res.json({success: false})
+        return res.json({success: false})
       }
-    })
-    .then(function(newUser) {
-      req.session.user = UserModel.removePass(newUser);
-      var userId = req.session.user._id;
-      if (items) {
-        var cartBody = {
-          userId,
-          items,
-          totalCost: CartModel.findTotalCost(items),
-          totalQty: CartModel.findTotalQty(items)
-        };
-        return CartModel.findOneAndUpdate({userId},cartBody,{
-          upsert: true,
-          new: true
-        });
-      }
-      else {
-        res.json({success: true});
-      }
-    })
-    .then(function(updatedCart) {
-      return CartModel.deleteOne({userId: guestId});
-    })
-    .then(function(deletedCart) {
-      res.json({success: true});
     })
     .catch(function(err) {
       res.send(err);
@@ -78,7 +80,7 @@ router.post('/login', function(req, res) {
       });
     })
     .then(function(user) {
-      if(!user) res.status(401).json({error:'Invalid Credentials'});
+      if(!user) res.status(401).json({error:'Invalid credentials'});
       else if (passwordHash.verify(body.pass, user.pass)) {
         req.session.user = UserModel.removePass(user);
         userId = req.session.user._id;
@@ -89,18 +91,21 @@ router.post('/login', function(req, res) {
             totalCost: CartModel.findTotalCost(items),
             totalQty: CartModel.findTotalQty(items)
           };
-          return CartModel.findOneAndUpdate({userId},cartBody,{
+          CartModel.findOneAndUpdate({userId},cartBody,{
             upsert: true,
             new: true
+          })
+          .then(function(updatedCart) {
+            return CartModel.deleteOne({userId: guestId});
+          })
+          .then(function(deletedCart) {
+            res.json({success: true});
+          })
+          .catch(function(err) {
+            res.send(err);
           });
         } else res.json({success:true});
       } else res.status(401).json({error: 'Invalid credentials'});
-    })
-    .then(function(updatedCart) {
-      return CartModel.deleteOne({userId: guestId});
-    })
-    .then(function(deletedCart) {
-      res.json({success: true});
     })
     .catch(function(err) {
       res.send(err);

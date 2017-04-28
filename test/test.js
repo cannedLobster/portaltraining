@@ -65,22 +65,45 @@ describe("User API", function() {
         email: "test1@email.com",
         pass: "testpass"
     };
+    let badTestUser1 = {
+      name: "TESTUSER",
+      user: "somethingdifferent",
+      email: "test1@email.com",
+      pass: "testpass"
+    };
+    let badTestUser2 = {
+      name: "TESTUSER",
+      user: "testusername1",
+      email: "test1@somethingdifferent.com",
+      pass: "testpass"
+    };
     let testLogin = {
         user: testUser.user,
         pass: testUser.pass
     };
-    let testId;
+    let badPassTestLogin = {
+        user: testUser.user,
+        pass: 'badpassword'
+    };
+    let badUserTestLogin = {
+      user: 'badusername',
+      pass: testUser.pass
+    };
     before('should initialize guest user by entering website', function(done) {
         agent = request.agent();
         agent
           .get(`http://localhost:${port}/`)
-          .end(function(){done();});
+          .end((err, res) => {done();});
     });
     it('should register test user', function(done) {
       agent
           .post(`http://localhost:${port}/user`)
           .send(testUser)
           .then(function(res) {
+              //Check status
+              assert.equal(res.statusCode, 200, 'Status code 200');
+              //Content type
+              assert.equal(res.type, 'application/json', 'Content type JSON');
               assert.isOk(res.body.success);
               done();
           })
@@ -88,48 +111,106 @@ describe("User API", function() {
               console.log(err);
           });
     });
-    it('should login test user', function(done) {
-      request
-        .post(`http://localhost:${port}/login`)
-        .send(testLogin)
-        .end(function(err, res) {
-           assert.isNotOk(err, "Error check");
-           assert.equal(res.statusCode, 200, 'Status code 200');
-           assert.equal(res.type, 'application/json', 'Content type JSON');
-           //Check data
-           assert.isOk(res.body.success);
-           done();
+    it('should create new agent', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
+    });
+    it('should attempt bad register with user', function(done) {
+      agent
+        .post(`http://localhost:${port}/user`)
+        .send(badTestUser1)
+        .then(function(res) {
+            //Check status
+            assert.equal(res.statusCode, 200, 'Status code 200');
+            //Content type
+            assert.equal(res.type, 'application/json', 'Content type JSON');
+            assert.isNotOk(res.body.success, 'Check unsuccessful register');
+            done();
+        })
+        .catch(err => {
+            console.log(err);
         });
     });
-    // agent
-    //     .get(`http://localhost:${port}/logout`)
-    //     .end(function(){done();});
-    // request
-    //     .post(`http://localhost:${port}/user/login`)
-    //     .send(testLogin)
-    //     .end(function(err, res) {
-    //         assert.isNotOk(err, "Error check");
-    //         assert.equal(res.statusCode, 200, 'Status code 200');
-    //         assert.equal(res.type, 'application/json', 'Content type JSON');
-    //         //Check data
-    //         assert.isOk(res.body.success);
-    //         done();
-    //     });
-    // it('should logout and register with bad form', function(done) {
-    //     agent
-    //         .get(`http://localhost:${port}/logout`);
-    //     testUser.pass = "somethingelse";
-    //     agent
-    //         .post(`http://localhost:${port}/user`)
-    //         .send(testUser)
-    //         .then(function(res) {
-    //             assert.isNotOk(res.body.success);
-    //             done();
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    // });
+    it('should create new agent', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
+    });
+    it('should attempt bad register with email', function(done) {
+      agent
+        .post(`http://localhost:${port}/user`)
+        .send(badTestUser2)
+        .then(function(res) {
+          assert.equal(res.statusCode, 200, 'Status code 200');
+          assert.equal(res.type, 'application/json', 'Content type JSON');
+          assert.isNotOk(res.body.success, 'Check unsuccessful register');
+          done();
+        })
+        .catch(err => {console.log(err);});
+    });
+    it('should create new agent', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
+    });
+    it('should successfully login to test user', function(done) {
+      agent
+        .post(`http://localhost:${port}/user/login`)
+        .send(testLogin)
+        .then(res => {
+          assert.equal(res.statusCode, 200, 'Status code 200');
+          assert.equal(res.type, 'application/json', 'Content type JSON');
+          assert.isOk(res.body.success, 'Check successful login');
+          done();
+        })
+        .catch(err => {console.log(err);});
+    });
+    it('should create new agent', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
+    });
+    it('should unsuccessfully login to testuser with bad pass', function(done) {
+      agent
+        .post(`http://localhost:${port}/user/login`)
+        .send(badPassTestLogin)
+        .then(res => {
+          assert.isOk(false, 'No error returned for bad login');
+          done();
+        })
+        .catch(err => {
+          assert.equal(err.status, 401, 'Status code 401');
+          assert.equal(err.response.type, 'application/json', 'Content type JSON');
+          assert.equal(err.response.body.error, 'Invalid credentials', 'Appropriate error report');
+          done();
+        });
+    });
+    it('should create new agent', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
+    });
+    it('should unsuccessfully login to testuser with bad user', function(done) {
+      agent
+        .post(`http://localhost:${port}/user/login`)
+        .send(badUserTestLogin)
+        .then(res => {
+          assert.isOk(false, 'No error returned for bad login');
+          done();
+        })
+        .catch(err => {
+          assert.equal(err.status, 401, 'Status code 401');
+          assert.equal(err.response.type, 'application/json', 'Content type JSON');
+          assert.equal(err.response.body.error, 'Invalid credentials', 'Appropriate error report');
+          done();
+        });
+    });
     after('should delete all users', function(done) {
         agent
             .delete(`http://localhost:${port}/user`)
@@ -147,8 +228,7 @@ describe("User API", function() {
 describe("Cart API", function() {
     var testGuestUserID;
     var testUserID;
-    let agent2 = null;
-    let agent3 = null;
+    let agent = null;
     let testUser = {
         name: "TESTUSER",
         user: "testusername2",
@@ -159,117 +239,144 @@ describe("Cart API", function() {
         user: testUser.user,
         pass: testUser.pass
     };
-    let testId;
-    before('should register test user', function(done) {
-        agent2 = request.agent();
-        agent2
-            .post(`http://localhost:${port}/user`)
-            .send(testUser)
-            .then(function(res) {
-                assert.isOk(res.body.success);
-                done();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+    let testItem1 = {
+      name: "TEST",
+      desc: "TEST DESC",
+      price: 999,
+      img: "TEST.JPG",
+      menu_id: 999
+    };
+    let testItem2 = {
+      name: "TEST2",
+      desc: "TEST DESC2",
+      price: 9999,
+      img: "TEST2.JPG",
+      menu_id: 9999
+    };
+    let cart = {items:[]};
+    cart.items.push({item:testItem1, qty:1});
+    cart.items.push({item:testItem2, qty:2});
+    let body = {items: cart.items};
+    before('should initialize guest user by entering website', function(done) {
+        agent = request.agent();
+        agent
+          .get(`http://localhost:${port}/`)
+          .end((err, res) => {done();});
     });
-    it('should post cart w/ testuser', function(done) {
-        agent2
-            .get(`http://localhost:${port}/menu`)
-            .end(function(err, res) {
-                let body = {
-                    items: []
-                };
-                let menu_arr = res.body;
-                for (var i in menu_arr) {
-                    body.items.push({
-                        item: menu_arr[i],
-                        qty: 1
-                    });
-                }
-                agent2
-                    .post(`http://localhost:${port}/cart`)
-                    .send(body)
-                    .end(function(err, res) {
-                        assert.equal(res.statusCode, 200, 'Status code 200');
-                        assert.equal(res.type, 'application/json', 'Content type JSON');
-                        //Check data
-                        assert.isOk(res.body.userId, 'Check-content: userId');
-                        assert.isOk(res.body.totalCost, 'Check-content: total cost');
-                        assert.isOk(res.body.totalQty, 'Check-content: total quantity');
-                        for (var i in res.body.items) {
-                            assert.equal(res.body.items[i].qty, 1);
-                        }
-                        testUserID = res.body.userId;
-                        done();
-                    });
-            });
+    it('should add items to cart as guest', function(done) {
+      agent
+        .post(`http://localhost:${port}/cart`)
+        .send(body)
+        .then(res => {
+          assert.equal(res.statusCode, 200, 'Status code 200');
+          assert.equal(res.type, 'application/json', 'Content type JSON');
+          // Response content check
+          assert.equal(res.body.totalCost, 20997, 'Check total cost');
+          assert.equal(res.body.totalQty, 3, 'Check total quantity');
+          assert.equal(res.body.items[0].qty, 1, 'Check test item 1 qty');
+          assert.equal(res.body.items[1].qty, 2, 'Check test item 2 qty');
+          assert.isOk(objEqual(res.body.items[0].item, testItem1), 'Check test item 1');
+          assert.isOk(objEqual(res.body.items[1].item, testItem2), 'Check test item 2');
+          done();
+        })
+        .catch(err => {console.log(err);});
     });
-    it('should get cart', function(done) {
-        agent2
-            .get(`http://localhost:${port}/cart`)
-            .end(function(err, res) {
-                assert.equal(res.statusCode, 200, 'Status code 200');
-                assert.equal(res.type, 'application/json', 'Content type JSON');
-                assert.isOk(res.body.items.length > 0, 'Response cart not empty');
-                done();
-            });
+    it('should register testuser', function(done) {
+      agent
+          .post(`http://localhost:${port}/user`)
+          .send(testUser)
+          .then(function(res) {
+              //Check status
+              assert.equal(res.statusCode, 200, 'Status code 200');
+              //Content type
+              assert.equal(res.type, 'application/json', 'Content type JSON');
+              assert.isOk(res.body.success);
+              done();
+          })
+          .catch(err => {
+              console.log(err);
+          });
     });
-    it('should logout', function(done) {
-        agent2
-            .get(`http://localhost:${port}/logout`)
-            .end(function() {
-                done();
-            });
+    it('should get guest cart', function(done) {
+      agent
+        .get(`http://localhost:${port}/cart`)
+        .then(res => {
+          assert.equal(res.statusCode, 200, 'Status code 200');
+          assert.equal(res.type, 'application/json', 'Content type JSON');
+          // Response content check
+          assert.equal(res.body.totalCost, 20997, 'Check total cost');
+          assert.equal(res.body.totalQty, 3, 'Check total quantity');
+          assert.equal(res.body.items[0].qty, 1, 'Check test item 1 qty');
+          assert.equal(res.body.items[1].qty, 2, 'Check test item 2 qty');
+          assert.isOk(objEqual(res.body.items[0].item, testItem1), 'Check test item 1');
+          assert.isOk(objEqual(res.body.items[1].item, testItem2), 'Check test item 2');
+          done();
+        })
+        .catch(err => {console.log(err);});
     });
-    it('should post into a guest cart', function(done) {
-        agent3 = request.agent();
-        agent3
-            .get(`http://localhost:${port}/menu`)
-            .end(function(err, res) {
-                var body = {
-                    items: []
-                };
-                var menu_arr = res.body;
-                for (var i in menu_arr) {
-                    body.items.push({
-                        item: menu_arr[i],
-                        qty: 1
-                    });
-                }
-                agent3
-                    .post(`http://localhost:${port}/cart`)
-                    .send(body)
-                    .end(function(err, response) {
-                        assert.equal(response.statusCode, 200, 'Status code 200');
-                        assert.equal(response.type, 'application/json', 'Content type JSON');
-                        //Check data
-                        // console.log(response.body, "!!!!!");
-                        // assert.isOk(response.body.userId, 'Check-content: userId');
-                        // assert.isOk(response.body.totalCost, 'Check-content: total cost');
-                        // assert.isOk(response.body.totalQty, 'Check-content: total quantity');
-                        // for (var i in response.body.items) {
-                        //     assert.equal(response.body.items[i].qty, 1);
-                        // }
-                        testGuestUserID = response.body.userId;
-                        done();
-                    });
-            });
+    it('should create new agent', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
     });
-    it('UserID for both carts should be different', function(done) {
-        console.log(testUserID, testGuestUserID);
-        assert.notEqual(testUserID, testGuestUserID, "IDs for cart for guest/user");
-        done();
+    it('should add to new guest cart', function(done) {
+      body.items[0].qty = 10;
+      agent
+        .post(`http://localhost:${port}/cart`)
+        .send(body)
+        .then(res => {
+          assert.equal(res.statusCode, 200, 'Status code 200');
+          assert.equal(res.type, 'application/json', 'Content type JSON');
+          // Response content check
+          assert.equal(res.body.totalCost, 29988, 'Check total cost');
+          assert.equal(res.body.totalQty, 12, 'Check total quantity');
+          assert.equal(res.body.items[0].qty, 10, 'Check test item 1 qty');
+          assert.equal(res.body.items[1].qty, 2, 'Check test item 2 qty');
+          assert.isOk(objEqual(res.body.items[0].item, testItem1), 'Check test item 1');
+          assert.isOk(objEqual(res.body.items[1].item, testItem2), 'Check test item 2');
+          done();
+        })
+        .catch(err => {console.log(err);});
+    });
+    it('should login as testuser successfully', function(done) {
+      agent
+        .post(`http://localhost:${port}/user/login`)
+        .send(testLogin)
+        .then(res => {
+          assert.equal(res.statusCode, 200, 'Status code 200');
+          assert.equal(res.type, 'application/json', 'Content type JSON');
+          assert.isOk(res.body.success, 'Check successful login');
+          done();
+        })
+        .catch(err => {console.log(err);});
+    });
+    it('should get equivalent new guest cart', function(done) {
+      agent
+        .get(`http://localhost:${port}/cart`)
+        .then(res => {
+          assert.equal(res.statusCode, 200, 'Status code 200');
+          assert.equal(res.type, 'application/json', 'Content type JSON');
+          // Response content check
+          assert.equal(res.body.totalCost, 29988, 'Check total cost');
+          assert.equal(res.body.totalQty, 12, 'Check total quantity');
+          assert.equal(res.body.items[0].qty, 10, 'Check test item 1 qty');
+          assert.equal(res.body.items[1].qty, 2, 'Check test item 2 qty');
+          assert.isOk(objEqual(res.body.items[0].item, testItem1), 'Check test item 1');
+          assert.isOk(objEqual(res.body.items[1].item, testItem2), 'Check test item 2');
+          done();
+        })
+        .catch(err => {console.log(err);});
     });
     after('should delete all carts and users', function(done) {
-        agent2
+        agent
             .delete(`http://localhost:${port}/cart`)
             .end(function(err, res) {
                 assert.isNotOk(err, "Error check");
                 assert.equal(res.statusCode, 200, "Status code 200");
                 assert.equal(res.type, 'application/json', 'Content type JSON');
                 assert.isOk(res.body.success);
-                agent2
+                agent
                     .delete(`http://localhost:${port}/user`)
                     .end(function(err, res) {
                         assert.isNotOk(err, "Error check");
@@ -281,3 +388,164 @@ describe("Cart API", function() {
             });
     });
 });
+
+describe('Order API', function() {
+  var testGuestUserID;
+  var testUserID;
+  let agent = null;
+  let testUser = {
+      name: "TESTUSER",
+      user: "testusername2",
+      email: "test2@email.com",
+      pass: "testpass"
+  };
+  let testLogin = {
+      user: testUser.user,
+      pass: testUser.pass
+  };
+  let testItem1 = {
+    name: "TEST",
+    desc: "TEST DESC",
+    price: 999,
+    img: "TEST.JPG",
+    menu_id: 999
+  };
+  let testItem2 = {
+    name: "TEST2",
+    desc: "TEST DESC2",
+    price: 9999,
+    img: "TEST2.JPG",
+    menu_id: 9999
+  };
+  let cart = {items:[]};
+  let orderbody = {
+    cart: null,
+    phone: '999-9999',
+    delivery: true,
+    address: 'Test Address',
+    card: 1234512345,
+    cost: {delivery: 10, tax: 1, final: 27}
+  };
+  let session_userId = null;
+  before('should initialize guest user by entering website', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
+  });
+  it('should get from menu and add items to local cart', function(done) {
+    agent
+      .get(`http://localhost:${port}/menu`)
+      .then(res => {
+        for (var i in res.body) {
+          cart.items.push({item: res.body[i], qty: parseInt(i)+1});
+        }
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should add items to cart as guest', function(done) {
+    agent
+      .post(`http://localhost:${port}/cart`)
+      .send({items: cart.items})
+      .then(res => {
+        assert.equal(res.statusCode, 200, 'Status code 200');
+        assert.equal(res.type, 'application/json', 'Content type JSON');
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should register testuser', function(done) {
+    agent
+        .post(`http://localhost:${port}/user`)
+        .send(testUser)
+        .then(function(res) {
+            //Check status
+            assert.equal(res.statusCode, 200, 'Status code 200');
+            //Content type
+            assert.equal(res.type, 'application/json', 'Content type JSON');
+            assert.isOk(res.body.success);
+            done();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+  });
+  it('should get guest cart', function(done) {
+    agent
+      .get(`http://localhost:${port}/cart`)
+      .then(res => {
+        assert.equal(res.statusCode, 200, 'Status code 200');
+        assert.equal(res.type, 'application/json', 'Content type JSON');
+        orderbody.cart = res.body;
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should submit order', function(done) {
+    agent
+    .post(`http://localhost:${port}/order`)
+    .send(orderbody)
+    .then(res => {
+      assert.equal(res.statusCode, 200, 'Status code 200');
+      assert.equal(res.type, 'application/json', 'Content type JSON');
+      // Response content check
+      assert.isOk(res.body.success, "Successful order made");
+      assert.isOk(res.body.userId, 'Order contains userId');
+      session_userId = res.body.userId;
+      done();
+    })
+    .catch(err => {console.log(err);});
+  });
+  it('should get order', function(done) {
+    agent
+    .get(`http://localhost:${port}/order`)
+    .then(res => {
+      assert.equal(res.statusCode, 200, 'Status code 200');
+      assert.equal(res.type, 'application/json', 'Content type JSON');
+      // Response content check
+      assert.equal(res.body.cart.userId, session_userId, 'Check if cart matches user');
+      assert.equal(res.body.phone, '999-9999', 'Check phone number');
+      assert.isOk(res.body.delivery, 'Check if delivery true');
+      assert.equal(res.body.address, 'Test Address', 'Check address');
+      assert.equal(res.body.card, 1234512345, 'Check card number');
+      assert.equal(res.body.cost.delivery, 10, 'Check delivery cost');
+      assert.equal(res.body.cost.tax, 1, 'Check tax cost');
+      assert.equal(res.body.cost.final, 27, 'Check final cost');
+      done();
+    })
+    .catch(err => {console.log(err);});
+  });
+  after('should delete all carts and users', function(done) {
+      agent
+          .delete(`http://localhost:${port}/cart`)
+          .end(function(err, res) {
+              assert.isNotOk(err, "Error check");
+              assert.equal(res.statusCode, 200, "Status code 200");
+              assert.equal(res.type, 'application/json', 'Content type JSON');
+              assert.isOk(res.body.success);
+              agent
+                  .delete(`http://localhost:${port}/user`)
+                  .end(function(err, res) {
+                      assert.isNotOk(err, "Error check");
+                      assert.equal(res.statusCode, 200, "Status code 200");
+                      assert.equal(res.type, 'application/json', 'Content type JSON');
+                      assert.isOk(res.body.success);
+                      done();
+                  });
+          });
+  });
+});
+
+//Helper Functions
+function objEqual(a, b) {
+  var aProp = Object.getOwnPropertyNames(a);
+  var bProp = Object.getOwnPropertyNames(b);
+  if (aProp.length != bProp.length) return false;
+  for (var i = 0; i < aProp.length; i++) {
+    var propName = aProp[i];
+    if (a[propName] !== b[propName])
+      return false;
+  }
+  return true;
+}

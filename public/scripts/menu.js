@@ -120,14 +120,3 @@ function generateMenu(menu) {
         content.appendChild(cartbutton);
     }
 }
-// function clearServerThruAJAX() {
-//   $.get("http://thiman.me:1337/menu/sunny", function(response) {
-//     for (var i in response) {
-//       $.ajax({
-//         url: "http://thiman.me:1337/menu/sunny/" + response[i]._id,
-//         type: "DELETE",
-//         async: false
-//       });
-//     }
-//   });
-// }
