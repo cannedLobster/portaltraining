@@ -10,7 +10,8 @@ var order = {
   cost: {
     delivery: Number,
     tax: Number,
-    final: Number
+    final: Number,
+    saved: Number
   }
 };
 

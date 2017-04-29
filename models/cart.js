@@ -8,7 +8,10 @@ var schema = new mongoose.Schema({
     userId: String,
     items: [item],
     totalCost: Number,
-    totalQty: Number
+    totalQty: Number,
+    coupon: Boolean,
+    deductedTotal: Number,
+    couponObj: Object
 });
 schema.statics.findTotalCost = function(items) {
   var total = 0;

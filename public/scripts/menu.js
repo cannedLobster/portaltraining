@@ -34,7 +34,7 @@ $("div.menu").on("click", ".item .content button.addtocart-btn", function(event)
     cart.items[index].qty += 1;
   }
   var body = {
-    items: cart.items
+    items: cart.items,
   };
   $.ajax({
     url: 'http://localhost:3000/cart',

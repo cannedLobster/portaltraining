@@ -537,6 +537,218 @@ describe('Order API', function() {
   });
 });
 
+describe('Coupon API', function() {
+  var testGuestUserID;
+  var testUserID;
+  let agent = null;
+  let testUser = {
+      name: "TESTUSER",
+      user: "testusername2",
+      email: "test2@email.com",
+      pass: "testpass"
+  };
+  let testLogin = {
+      user: testUser.user,
+      pass: testUser.pass
+  };
+  let testItem1 = {
+    name: "TEST",
+    desc: "TEST DESC",
+    price: 999,
+    img: "TEST.JPG",
+    menu_id: 999
+  };
+  let testItem2 = {
+    name: "TEST2",
+    desc: "TEST DESC2",
+    price: 9999,
+    img: "TEST2.JPG",
+    menu_id: 9999
+  };
+  let cart = {items:[]};
+  let orderbody = {
+    cart: null,
+    phone: '999-9999',
+    delivery: true,
+    address: 'Test Address',
+    card: 1234512345,
+    cost: {delivery: 10, tax: 1, final: 27}
+  };
+  let testCoupon = {
+    name: 'TestCoupon',
+    code: 'asdf',
+    type: 'flat',
+    uses: 1,
+    active: true,
+    val: 100
+  };
+  let testCouponUse = {
+    name: 'TestCoupon',
+    code: 'qwer',
+    type: 'flat',
+    uses: 1,
+    active: true,
+    val: 2
+  };
+  let testCouponCalc = {
+    name: 'TestCoupon',
+    code: 'sdfg',
+    type: 'flat',
+    uses: 1,
+    active: true,
+    val: 2
+  };
+  before('should initialize guest user by entering website', function(done) {
+      agent = request.agent();
+      agent
+        .get(`http://localhost:${port}/`)
+        .end((err, res) => {done();});
+  });
+  it('should get from menu and add items to local cart', function(done) {
+    agent
+      .get(`http://localhost:${port}/menu`)
+      .then(res => {
+        for (var i in res.body) {
+          cart.items.push({item: res.body[i], qty: parseInt(i)+1});
+        }
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should add items to cart as guest', function(done) {
+    agent
+      .post(`http://localhost:${port}/cart`)
+      .send({items: cart.items})
+      .then(res => {
+        assert.equal(res.statusCode, 200, 'Status code 200');
+        assert.equal(res.type, 'application/json', 'Content type JSON');
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should register testuser', function(done) {
+    agent
+        .post(`http://localhost:${port}/user`)
+        .send(testUser)
+        .then(function(res) {
+            //Check status
+            assert.equal(res.statusCode, 200, 'Status code 200');
+            //Content type
+            assert.equal(res.type, 'application/json', 'Content type JSON');
+            assert.isOk(res.body.success);
+            done();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+  });
+  let testCouponID = null;
+  it('should create test coupon', function(done) {
+    agent
+      .post(`http://localhost:${port}/coupon`)
+      .send(testCoupon)
+      .then(function(res) {
+        assert.equal(res.statusCode, 200, 'Status code 200');
+        assert.equal(res.type, 'application/json', 'Content type JSON');
+        // Content check
+        assert.equal(res.body.name, testCoupon.name, 'Check coupon name');
+        assert.equal(res.body.code, testCoupon.code, 'Check coupon code');
+        assert.equal(res.body.type, testCoupon.type, 'Check coupon type');
+        assert.equal(res.body.uses, testCoupon.uses, 'Check coupon uses');
+        assert.equal(res.body.val, testCoupon.val, 'Check coupon val');
+        assert.isOk(res.body.active, 'Check if coupon is active');
+        testCouponID = res.body._id;
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should disable test coupon', function(done) {
+    agent
+      .post(`http://localhost:${port}/coupon/disable/` + testCouponID)
+      .then(res => {
+        assert.equal(res.statusCode, 200, 'Status code 200');
+        assert.equal(res.type, 'application/json', 'Content type JSON');
+        assert.isOk(res.body.success, 'Check if disable is successful');
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should create new test coupon [MAX USE IS 1]', function(done) {
+    agent
+      .post(`http://localhost:${port}/coupon`)
+      .send(testCouponUse)
+      .then(function(res) {
+        assert.equal(res.statusCode, 200, 'Status code 200');
+        assert.equal(res.type, 'application/json', 'Content type JSON');
+        // Content check
+        assert.equal(res.body.name, testCouponUse.name, 'Check coupon name');
+        assert.equal(res.body.code, testCouponUse.code, 'Check coupon code');
+        assert.equal(res.body.type, testCouponUse.type, 'Check coupon type');
+        assert.equal(res.body.uses, testCouponUse.uses, 'Check coupon uses');
+        assert.equal(res.body.val, testCouponUse.val, 'Check coupon val');
+        assert.isOk(res.body.active, 'Check if coupon is active');
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should use test coupon [USE #1]', function(done) {
+    agent
+      .post(`http://localhost:${port}/coupon/use/` + testCouponUse.code)
+      .then(res => {
+        assert.equal(res.statusCode, 200, 'Status code 200');
+        assert.equal(res.type, 'application/json', 'Content type JSON');
+        // Content check
+        var uses = testCouponUse.uses - 1;
+        assert.equal(res.body.name, testCouponUse.name, 'Check coupon name');
+        assert.equal(res.body.code, testCouponUse.code, 'Check coupon code');
+        assert.equal(res.body.type, testCouponUse.type, 'Check coupon type');
+        assert.equal(res.body.uses, uses, 'Check coupon uses');
+        assert.equal(res.body.val, testCouponUse.val, 'Check coupon val');
+        assert.isOk(res.body.active, 'Check if coupon is active');
+        done();
+      })
+      .catch(err => {console.log(err);});
+  });
+  it('should use test coupon again and fail [USE #2]', function(done) {
+    agent
+      .post(`http://localhost:${port}/coupon/use/` + testCouponUse.code)
+      .then(res => {assert.isOk(false, 'Not supposed to succeed');})
+      .catch(err => {
+        assert.equal(err.status, 401, 'Status code 401');
+        assert.equal(err.response.type, 'application/json', 'Content type JSON');
+        assert.equal(err.response.body.error, 'No more uses for coupon', 'Appropriate error report');
+        done();
+      });
+  });
+  after('should delete all carts and users and coupons', function(done) {
+      agent
+          .delete(`http://localhost:${port}/cart`)
+          .end(function(err, res) {
+              assert.isNotOk(err, "Error check");
+              assert.equal(res.statusCode, 200, "Status code 200");
+              assert.equal(res.type, 'application/json', 'Content type JSON');
+              assert.isOk(res.body.success);
+              agent
+                  .delete(`http://localhost:${port}/user`)
+                  .end(function(err, res) {
+                      assert.isNotOk(err, "Error check");
+                      assert.equal(res.statusCode, 200, "Status code 200");
+                      assert.equal(res.type, 'application/json', 'Content type JSON');
+                      assert.isOk(res.body.success);
+                      agent
+                        .delete(`http://localhost:${port}/coupon`)
+                        .end(function(err, res) {
+                          assert.isNotOk(err, "Error check");
+                          assert.equal(res.statusCode, 200, "Status code 200");
+                          assert.equal(res.type, 'application/json', 'Content type JSON');
+                          assert.isOk(res.body.success);
+                          done();
+                        });
+                  });
+          });
+  });
+});
+
 //Helper Functions
 function objEqual(a, b) {
   var aProp = Object.getOwnPropertyNames(a);

@@ -15,11 +15,23 @@ router.post('/', function(req, res) {
       });
     } else {
       var userId = req.session.user.guest ? req.session.user.guestID : req.session.user._id;
-      var cartBody = {
-        userId,
-        items,
-        totalCost: CartModel.findTotalCost(items),
-        totalQty: CartModel.findTotalQty(items)
+      if(body.coupon != null){
+        var cartBody = {
+          userId,
+          items,
+          totalCost: CartModel.findTotalCost(items),
+          totalQty: CartModel.findTotalQty(items),
+          coupon: body.coupon,
+          deductedTotal: body.deductedTotal,
+          couponObj: body.couponObj
+        }
+      } else {
+        var cartBody = {
+          userId,
+          items,
+          totalCost: CartModel.findTotalCost(items),
+          totalQty: CartModel.findTotalQty(items),
+        }
       }
       CartModel
       .findOneAndUpdate({
@@ -63,6 +75,16 @@ router.get('/', function(req, res) {
     });
   }
 });
+router.delete('/:id', function(req, res) {
+  var cartUserID = req.params.id;
+  CartModel.deleteOne({userId: cartUserID}, function(err, doc) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json({success: true});
+    }
+  });
+});;
 router.delete('/', function(req, res) {
   CartModel.deleteMany({}, function(err, doc) {
     if (err) {
@@ -72,15 +94,5 @@ router.delete('/', function(req, res) {
     }
   });
 });
-router.delete('/:id', function(req, res) {
- var cartUserID = req.params.id;
- CartModel.deleteOne({userId: cartUserID}, function(err, doc) {
-  if (err) {
-     res.send(err);
-   } else {
-     res.json({success: true});
-   }
- });
-});;
 
 module.exports = router;

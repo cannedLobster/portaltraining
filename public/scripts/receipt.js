@@ -36,12 +36,25 @@ function createReceipt(order) {
 
   var receiptTotals = `<div class="receipt-totals">
     <p>Subtotal $${order.cart.totalCost}</p>
+    <p>Saved $${order.cost.saved}</p>
     <p>Sales Tax $${order.cost.tax}</p>
     <p>Delivery $${order.cost.delivery}</p>
     <p><em>Grand Total: $${order.cost.final}<em></p>
   </div>`;
 
-  var complete = receiptBuyer + receiptItems + receiptTotals;
+  var coupon = ``;
+  if (order.cart.coupon) {
+    coupon = `<h3> Coupons Used </h3>
+    <p> Name: ${order.cart.couponObj.name}</p>
+    <p> Type: ${order.cart.couponObj.type.toUpperCase()}`;
+    if (order.cart.couponObj.type != 'bogo') {
+      coupon += ` Amount: ${order.cart.couponObj.val}</p>`
+    } else {
+      coupon += `</p>`;
+    }
+  }
+
+  var complete = receiptBuyer + receiptItems + receiptTotals + coupon;
   receiptElement.before(complete);
 }
 

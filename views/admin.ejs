@@ -1,0 +1,26 @@
+<%- include('header', {title: 'Login and Registration', usermsg, guest}) %>
+
+<div class="coupons">
+    <h2><%- title %></h2>
+    <form id='create-coupons'>
+      <input type="text" placeholder="Name" id="coupon-name" required/>
+      <input type="text" placeholder="Coupon Code" id="coupon-code" required/>
+      <select id='coupon-type'>
+        <option value="bogo">Buy One Get One Free</option>
+          <option value="percent">Percent</option>
+          <option value="flat">Flat</option>
+      </select>
+      <label for="coupon-use">Number of uses:</label>
+      <input type="number" value="3" id="coupon-use" min="1" required/>
+      <button type='submit' id='coupon-form'>Create Coupon</button>
+    </form>
+    <table id='coupon-table'>
+      <thead>
+        <th>Coupons List</th>
+      </thead>
+      <!-- Add Coupons HEre -->
+    </table>
+</div>
+<script src="./scripts/admin.js"></script>
+
+<%- include('footer') %>
